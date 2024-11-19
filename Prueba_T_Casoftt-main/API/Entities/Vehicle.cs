@@ -10,5 +10,7 @@ namespace API.Entities
 
         public VehicleBrand VehicleBrand { get; set; } = null!;
         public List<VehiclePhoto> VehiclePhotos { get; set; } = [];
+        
+
     }
 }

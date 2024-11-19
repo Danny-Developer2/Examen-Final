@@ -42,21 +42,25 @@ public class VehicleRepository(DataContext context, IMapper mapper) : IVehicleRe
             .SingleOrDefaultAsync(x => x.Id == id)
         ;
 
-    public async Task<List<OptionDto>> GetOptionsAsync() => 
+    public async Task<List<OptionDto>> GetOptionsAsync() =>
         await context.Vehicles
             .ProjectTo<OptionDto>(mapper.ConfigurationProvider)
             .ToListAsync()
         ;
 
     public async Task<PagedList<VehicleDto>> GetPagedListAsync(VehicleParams param)
+    
     {
         IQueryable<Vehicle> query = context.Vehicles.AsQueryable();
+        
 
-        if (!string.IsNullOrEmpty(param.Term)) {
+        if (!string.IsNullOrEmpty(param.Term))
+        {
             query = query.Where(x => !string.IsNullOrEmpty(x.Model) &&
                 x.Model == param.Term
             );
         }
+       
 
         return await PagedList<VehicleDto>.CreateAsync(
             query.ProjectTo<VehicleDto>(mapper.ConfigurationProvider),
@@ -64,4 +68,6 @@ public class VehicleRepository(DataContext context, IMapper mapper) : IVehicleRe
             param.PageSize
         );
     }
+
+
 }

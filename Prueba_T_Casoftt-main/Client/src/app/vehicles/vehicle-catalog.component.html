@@ -2,6 +2,21 @@
     <div class="container mt-2">
       <!-- Contenedor para la tabla y la paginación con altura limitada -->
       <div class="table-container d-flex flex-column" style="max-height: 500px; overflow-y: auto;">
+
+        <div class="container d-flex justify-content-left align-items-center" style="height: 100%;">
+          <div class="row w-left">
+            <div class="col-12">
+              <div class="mb-3 d-flex justify-content-center">
+                <input type="text" placeholder="Buscar por Modelo" class="form-control me-2" id="filter-term" aria-describedby="search" [(ngModel)]="term" (ngModelChange)="onSearchChange()">
+                <input type="number" placeholder="Año..." class="form-control me-2" id="filter-term" aria-describedby="search" [(ngModel)]="year" (ngModelChange)="onSearchChange()">
+                <a class="btn btn-outline-primary px-3 me-2" (click)="applyFilters()"><fa-icon [icon]="faSearch"></fa-icon></a>
+                <a class="btn btn-outline-secondary px-3" (click)="resetFilters()"><fa-icon [icon]="faBroom"></fa-icon>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <div class="table-responsive flex-grow-1">
           <table class="table table-bordered table-dark table-striped rounded shadow-sm">
             <thead>

@@ -31,27 +31,35 @@ export class VehiclesService {
   getVehicles() {
     const cacheKey = Object.values(this.params()).join('-');
     const cachedResponse = this.cache.get(cacheKey);
-
-    // Si existe una respuesta en la caché, usa esa respuesta en lugar de hacer la solicitud.
+  
+    
     if (cachedResponse) {
       setPaginatedResponse(cachedResponse, this.paginatedResult);
-      return of(cachedResponse); // Retorna un Observable para mantener consistencia.
+      return of(cachedResponse); 
     }
-
-    // Configura los parámetros de paginación.
+  
+    
     let params = setPaginationHeaders(
       this.params().pageNumber!,
       this.params().pageSize!
     );
-
-    // Verifica que `orderBy` no sea `undefined` antes de agregarlo a los parámetros.
+  
+    
     if (this.params()['orderBy']) {
       params = params.append('orderBy', this.params()['orderBy']);
     } else {
       console.warn('El parámetro "orderBy" no está definido y se omitirá.');
     }
-
-    // Realiza la solicitud HTTP.
+    
+    
+    if (this.params()['term']) {
+      params = params.append('term', this.params()['term'] as string);
+    }
+    if (this.params()['year']) {
+      params = params.append('year', this.params()['year'] as number);
+    }
+  
+    
     console.log(this.baseUrl);
     return this.http
       .get<Vehicle[]>(this.baseUrl, { observe: 'response', params })
@@ -59,16 +67,17 @@ export class VehiclesService {
         map((response) => {
           setPaginatedResponse(response, this.paginatedResult);
           console.log(response);
-          this.cache.set(cacheKey, response); // Guarda la respuesta en la caché.
-
-          return response.body; // Retorna solo el cuerpo de la respuesta.
+          this.cache.set(cacheKey, response); 
+  
+          return response.body; 
         }),
         catchError((err) => {
           console.error('Error al obtener los vehículos:', err);
-          return of([]); // Retorna un array vacío en caso de error para manejarlo de forma segura.
+          return of([]); 
         })
       );
   }
+  
 
   getByIdAync(id: number) {
     const itemToReturn: Vehicle = [...this.cache.values()]

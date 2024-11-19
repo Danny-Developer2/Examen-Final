@@ -400,3 +400,4 @@ C:\Projects\Examen-Final\Prueba_T_Casoftt-main\Prueba_T_Casoftt-main\API\obj\Deb
 C:\Projects\Examen-Final\Prueba_T_Casoftt-main\Prueba_T_Casoftt-main\API\obj\Debug\net8.0\API.pdb
 C:\Projects\Examen-Final\Prueba_T_Casoftt-main\Prueba_T_Casoftt-main\API\obj\Debug\net8.0\API.genruntimeconfig.cache
 C:\Projects\Examen-Final\Prueba_T_Casoftt-main\Prueba_T_Casoftt-main\API\obj\Debug\net8.0\ref\API.dll
+C:\Projects\Examen-Final\Prueba_T_Casoftt-main\Prueba_T_Casoftt-main\API\obj\Debug\net8.0\API.sourcelink.json

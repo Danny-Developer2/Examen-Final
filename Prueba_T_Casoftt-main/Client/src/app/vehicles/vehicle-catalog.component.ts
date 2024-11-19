@@ -8,15 +8,22 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { SelectOption } from '../_models/selectOption';
 import { BrandsService } from '../services/brands.service';
+import { Subject } from 'rxjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBroom } from '@fortawesome/free-solid-svg-icons'; 
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
   selector: 'app-vehicle-catalog',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule,FontAwesomeModule],
   templateUrl: './vehicle-catalog.component.html',
 })
 export class VehiclesComponent implements OnInit, OnDestroy {
+  faBroom = faBroom;
+  faSearch = faSearch
+
   // Señal para almacenar los resultados paginados.
 
   private brandsService = inject(BrandsService);
@@ -24,10 +31,11 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   
   // Inyección del servicio VehiclesService.
   private service = inject(VehiclesService);
+  private searchTerms = new Subject<string>();
   
-  term: string = '';  // Término de búsqueda.
-  year: number | null = null;  // Año de búsqueda.
-  showMorePhotos: boolean = false;  // Para mostrar más fotos si es necesario.
+  term: string = ''; 
+  year: number | null = null;  
+  showMorePhotos: boolean = false;  
   brandOptions: SelectOption[] = [];
 
   constructor() {
@@ -62,26 +70,30 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   }
 
   applyFilters() {
-    // Aplicar filtros de búsqueda.
-    const term = this.term.trim();
+    const term = this.term.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); 
+    
+  
+    
     if (term !== this.service.params().term) {
-      this.service.params().term = term;  // Actualizar el término de búsqueda en el servicio.
+      this.service.params().term = term;
     }
-
+  
+    
     if (this.year !== this.service.params().year) {
-      this.service.params().year = this.year ?? 0;  // Actualizar el año en los parámetros del servicio.
+      this.service.params().year = this.year ?? 0;
     }
-
-    // Realizar la búsqueda con los filtros aplicados.
+  
+    
     this.service.getVehicles().subscribe({
       next: (data: PaginatedResult<Vehicle[]>) => {
-        this.paginatedResult.set(data);  // Actualizar los resultados paginados.
+        this.paginatedResult.set(data);
       },
       error: (err) => {
         console.error('Error al aplicar filtros:', err);
       }
     });
   }
+  
 
   pageChanged(event: any) {
     // Cambiar la página según la selección del usuario.
@@ -115,8 +127,19 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     // Navegar al detalle de un vehículo específico.
     this.service.navigateToVehicle1(vehicleId);
   }
+  onSearchChange() {
+    this.searchTerms.next(this.term);
+  }
 
-  
+  resetFilters() {
+    this.term = '';
+    this.year = null;
+    this.service.resetVehicleParams();
+    this.service.getVehicles();
+  }
+
+
+
 
 
   
