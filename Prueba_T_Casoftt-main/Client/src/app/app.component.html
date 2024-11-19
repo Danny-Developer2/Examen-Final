@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-primary shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-light d-flex align-items-center" href="/home">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrzbLCC5g32FJj0xTeCAX1S9m_SKQneXDM7g&s" alt="Icono de un Carro" width="30" height="24" class="d-inline-block align-text-top me-3">
+      Cars
+    </a>
+    
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-light fs-5 px-3 py-2 rounded-pill transition-all hover-shadow" [routerLink]="'vehicles'">
+            Vehicles
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light fs-5 px-3 py-2 rounded-pill transition-all hover-shadow" [routerLink]="'vehicle/create'">
+            Create
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light fs-5 px-3 py-2 rounded-pill transition-all hover-shadow" [routerLink]="'/Brands'">
+            Brands
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+
+<!-- Footer -->
+<footer class="bg-dark text-light py-4 mt-5">
+  <div class="container">
+    <div class="row">
+      <!-- Columna para información de la empresa -->
+      <div class="col-md-4 mb-3">
+        <h5 class="fw-bold">Cars Company</h5>
+        <p>© 2024 Cars Company. Todos los derechos reservados.</p>
+        <p>Dirección: Calle Ficticia 123, Ciudad, País</p>
+      </div>
+      
+      <!-- Columna para enlaces útiles -->
+      <div class="col-md-4 mb-3">
+        <h5 class="fw-bold">Enlaces útiles</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-light text-decoration-none">Política de privacidad</a></li>
+          <li><a href="#" class="text-light text-decoration-none">Términos de servicio</a></li>
+          <li><a href="#" class="text-light text-decoration-none">Soporte</a></li>
+        </ul>
+      </div>
+
+      <!-- Columna para redes sociales -->
+      <div class="col-md-4 mb-3">
+        <h5 class="fw-bold">Síguenos</h5>
+        <ul class="list-unstyled d-flex">
+          <li class="me-3">
+            <a href="#" class="text-light fs-4">
+              <i class="fab fa-facebook"></i>
+            </a>
+          </li>
+          <li class="me-3">
+            <a href="#" class="text-light fs-4">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+          <li class="me-3">
+            <a href="#" class="text-light fs-4">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>

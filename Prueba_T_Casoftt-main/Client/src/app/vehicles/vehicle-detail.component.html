@@ -1,0 +1,119 @@
+<!-- Agregar Google Fonts -->
+<head>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+</head>
+
+<div class="container mt-5">
+  
+  <!-- Alerta de eliminación exitosa -->
+  <div *ngIf="showAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="font-family: 'Poppins', sans-serif;">
+    <strong>¡Éxito!</strong> El vehículo fue eliminado correctamente.
+    <button type="button" class="btn-close" (click)="closeAlert()"></button>
+  </div>
+
+  <!-- Fila con botones centrados -->
+  <div class="row justify-content-center mb-2">
+    <div class="col-auto">
+      <button
+        class="btn btn-danger mx-2"
+        style="font-family: 'Poppins', sans-serif"
+        (click)="deleteActionVehicle(vehicle.id)"
+      >
+        Eliminar
+      </button>
+
+      <button
+        class="btn btn-success mx-2"
+        style="font-family: 'Poppins', sans-serif"
+        (click)="actuaizarDatosVehicle(vehicle.id)"
+      >
+        Actualizar Datos de Automovil 
+      </button>
+
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <!-- Columna para el card con un tamaño más ajustado -->
+    <div class="col-md-6 col-lg-4">
+      <div
+        class="card shadow-lg rounded"
+        style="font-family: 'Poppins', sans-serif; max-width: 500px"
+      >
+        <!-- Carrusel de imágenes si hay más de una -->
+        <div
+          *ngIf="vehicle.photos.length > 1"
+          id="vehicleCarousel"
+          class="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-inner">
+            <div
+              class="carousel-item active"
+              *ngFor="let photo of vehicle.photos; let i = index"
+            >
+              <img
+                [src]="photo.url"
+                class="d-block w-100"
+                alt="Foto del vehículo"
+                style="height: 200px; object-fit: cover"
+              />
+            </div>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#vehicleCarousel"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#vehicleCarousel"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+
+        <!-- Imagen única ajustada -->
+        <img
+          *ngIf="vehicle.photos.length === 1"
+          [src]="vehicle.photos[0]?.url"
+          class="card-img-top img-fluid"
+          alt="Foto del vehículo"
+          style="max-height: 250px; object-fit: contain"
+        />
+
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ vehicle.model }} ({{ vehicle.year }})</h5>
+          <h6 class="card-subtitle mb-3 text-muted">
+            {{ vehicle.brand!.name }}
+          </h6>
+          <p class="card-text"><strong>Color:</strong> {{ vehicle.color }}</p>
+          <p class="card-text"><strong>ID:</strong> {{ vehicle.id }}</p>
+          <div>
+            <h6>Fotos adicionales:</h6>
+            <div class="row">
+              <div class="col-6" *ngFor="let photo of vehicle.photos">
+                <img
+                  [src]="photo.url"
+                  alt="Foto adicional del vehículo"
+                  class="img-fluid rounded mb-2"
+                  style="height: 100px; object-fit: cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

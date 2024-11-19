@@ -1,0 +1,138 @@
+<div *ngIf="showAlertSucces" class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Vehículo actualizado con éxito.
+      </div>
+      <button type="button" class="btn-close btn-close-black ms-auto p-3" (click)="showAlertSucces = false" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow-lg" style="max-width: 800px; width: 100%">
+    <div class="row">
+      <!-- Imagen a la izquierda -->
+      <div class="col-md-4 text-center">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/3301/3301565.png"
+          alt="Imagen del vehículo"
+          class="img-fluid rounded"
+        />
+      </div>
+
+      <!-- Formulario a la derecha -->
+      <div class="col-md-8">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <!-- Marca -->
+          <div class="form-group mb-3">
+            <label for="brand" class="form-label">Marca</label>
+            <select id="brand" formControlName="brand" class="form-select">
+              <option disabled value="null">Seleccione una marca</option>
+              <option *ngFor="let brand of brandOptions" [ngValue]="brand">
+                
+                {{ brand.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Modelo -->
+          <div class="form-group mb-3">
+            <label for="model" class="form-label">Modelo</label>
+            <input
+              type="text"
+              id="model"
+              formControlName="model"
+              placeholder="Ingrese el modelo"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Año -->
+          <div class="form-group mb-3">
+            <label for="year" class="form-label">Año</label>
+            <input
+              type="number"
+              id="year"
+              formControlName="year"
+              placeholder="Ingrese el año"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Color -->
+          <div class="form-group mb-3">
+            <label for="color" class="form-label">Color</label>
+            <input
+              type="text"
+              id="color"
+              formControlName="color"
+              placeholder="Ingrese el color"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Fotos -->
+          <div formArrayName="photos">
+
+            <div
+              *ngFor="let photo of form.controls.photos.controls; let i = index"
+              [formGroupName]="i"
+              class="form-group mb-3"
+            >
+              <label for="url-{{ i }}" class="form-label">Foto URL</label>
+              <input
+                type="text"
+                id="url-{{ i }}"
+                formControlName="url"
+                placeholder="Ingrese la URL de la foto"
+                class="form-control"
+              />
+              <button
+                type="button"
+                (click)="deletePhoto(i)"
+                class="btn btn-danger mt-2"
+              >
+                Eliminar Foto
+              </button>
+            </div>
+            <div *ngIf="showAlert" class="alert alert-warning" role="alert">
+              No puedes agregar más de 5 fotos.
+            </div>
+          </div>
+
+          <!-- Botón para agregar foto -->
+          <button
+            type="button"
+            (click)="addPhoto()"
+            class="btn btn-primary mb-3"
+          >
+            Agregar Foto
+          </button>
+
+          <div class="form-group">
+            <!-- Botón Cancelar -->
+            <button
+              type="button"
+              (click)="onCancel()"
+              class="btn btn-danger w-100"
+            >
+              Cancelar
+            </button>
+            <br />
+            <br />
+            <!-- Botón Guardar -->
+            <button
+              type="submit"
+              [disabled]="form.invalid"
+              class="btn btn-success w-100"
+            >
+              Guardar Vehículo
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
