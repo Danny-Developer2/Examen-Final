@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { SelectOption } from '../_models/selectOption';
-import { BrandsService } from '../services/brands.service';
 import { CommonModule } from '@angular/common';
+import { BrandsService } from '@services/brands.service';
+import { SelectOption } from '@_models/selectOption';
 
 @Component({
   selector: 'app-brands-vehicle',

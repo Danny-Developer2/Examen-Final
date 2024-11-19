@@ -1,9 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { VehiclesService } from '../services/vehicles.service';
 import { CommonModule } from '@angular/common';
+import { VehiclesService } from '@services/vehicles.service';
 
 
 @Component({

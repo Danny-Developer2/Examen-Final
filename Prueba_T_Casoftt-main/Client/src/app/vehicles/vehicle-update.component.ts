@@ -5,15 +5,15 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { BadRequest } from '../_models/badRequest';
-import { SelectOption } from '../_models/selectOption';
-import { BrandsService } from '../services/brands.service';
-import { VehiclesService } from '../services/vehicles.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Vehicle } from '../_models/vehicle';
-import { ToastService } from '../services/toast.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SelectOption } from '@_models/selectOption';
+import { BadRequest } from '@_models/badRequest';
+import { ToastService } from '@services/toast.service';
+import { VehiclesService } from '@services/vehicles.service';
+import { Vehicle } from '@_models/vehicle';
+import { BrandsService } from '@services/brands.service';
 
 type PhotoType = {
   url: FormControl<string | null>;

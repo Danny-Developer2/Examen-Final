@@ -1,17 +1,16 @@
 import { Component, inject, signal, effect, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VehiclesService } from '../services/vehicles.service';
-import { PaginatedResult } from '../_models/pagination';
-import { Vehicle } from '../_models/vehicle';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { SelectOption } from '../_models/selectOption';
-import { BrandsService } from '../services/brands.service';
 import { Subject } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBroom } from '@fortawesome/free-solid-svg-icons'; 
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { BrandsService } from '@services/brands.service';
+import { VehiclesService } from '@services/vehicles.service';
+import { PaginatedResult } from '@_models/pagination';
+import { Vehicle } from '@_models/vehicle';
+import { SelectOption } from '@_models/selectOption';
 
 
 @Component({
@@ -70,7 +69,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   }
 
   applyFilters() {
-    const term = this.term.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); 
+    const term = this.term
     
   
     

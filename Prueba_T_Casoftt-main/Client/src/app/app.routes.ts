@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
-import { VehiclesComponent } from './vehicles/vehicle-catalog.component';
-import { VehicleHomeComponent } from './vehicles/vehicle-home.component';
-import { VehicleDetailComponent } from './vehicles/vehicle-detail.component';
-import { VehicleAlertsComponent } from './vehicle-alerts/vehicle-alerts.component';
-import { VehicleUpdateComponent } from './vehicles/vehicle-update.component';
-import { VehicleCreateComponent } from './vehicles/vehicle-create.component';
-import { BrandsVehicleComponent } from './brands-vehicle/brands-vehicle.component';
+import { BrandsVehicleComponent } from 'src/app/brands-vehicle/brands-vehicle.component';
+import { VehicleAlertsComponent } from 'src/app/vehicle-alerts/vehicle-alerts.component';
+import { VehiclesComponent } from 'src/app/vehicles/vehicle-catalog.component';
+import { VehicleCreateComponent } from 'src/app/vehicles/vehicle-create.component';
+import { VehicleDetailComponent } from 'src/app/vehicles/vehicle-detail.component';
+import { VehicleHomeComponent } from 'src/app/vehicles/vehicle-home.component';
+import { VehicleUpdateComponent } from 'src/app/vehicles/vehicle-update.component';
+
 
 export const routes: Routes = [
   { path: 'vehicles', component: VehiclesComponent },
