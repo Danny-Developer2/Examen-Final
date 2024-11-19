@@ -4,7 +4,7 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,8 +15,6 @@ import { ToastService } from '@services/toast.service';
 import { BrandsService } from '@services/brands.service';
 import { VehiclesService } from '@services/vehicles.service';
 import { Vehicle } from '@_models/vehicle';
-
-
 
 type PhotoType = {
   url: FormControl<string | null>;
@@ -34,7 +32,12 @@ type FormType = {
 @Component({
   selector: 'app-vehicle-create',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,ReactiveFormsModule, CommonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+  ],
   templateUrl: './vehicle-create.component.html',
 })
 export class VehicleCreateComponent {
@@ -45,51 +48,41 @@ export class VehicleCreateComponent {
   url: string | null = null;
   private brandsService = inject(BrandsService);
   service = inject(VehiclesService);
-  showAlert: boolean = false;  
-  vehicleId: number | null = null; 
+  showAlert: boolean = false;
+  vehicleId: number | null = null;
   showAlertSucces: boolean = false;
+  showAlertError: boolean = false;
   route = inject(ActivatedRoute);
-  
 
   brandOptions: SelectOption[] = [];
 
-    form = new FormGroup<FormType>({
+  form = new FormGroup<FormType>({
     brand: new FormControl<SelectOption | null>(null, Validators.required),
     model: new FormControl<string | null>(null, Validators.required),
     year: new FormControl<number | null>(null, Validators.required),
     color: new FormControl<string | null>(null, Validators.required),
-    photos: new FormArray<FormGroup<PhotoType>>([],Validators.required),
+    photos: new FormArray<FormGroup<PhotoType>>([], Validators.required),
   });
-  
 
   submitted = signal<boolean>(false);
 
-
   constructor() {
-
-    
-    
-    
-    // Obtener opciones de marcas al inicializar el componente
     this.brandsService.getOptions().subscribe((options) => {
       this.brandOptions = options;
     });
 
-    // Cargar datos del vehículo si el ID es válido
     const id = this.route.snapshot.paramMap.get('id');
     if (id !== null) {
       this.service.getById(parseInt(id)).subscribe({
         next: (data: Vehicle) => {
-          console.log('Datos del vehículo', data); // Verificar los datos
-          
-          // Asignar los valores del vehículo a los campos del formulario
+          console.log('Datos del vehículo', data);
+
           this.form.patchValue({
             model: data.model,
             year: data.year,
             color: data.color,
           });
 
-          // Verificar que la marca esté presente y asignarla
           const selectedBrand = this.brandOptions.find(
             (brand) => brand.id === data.brand?.id
           );
@@ -99,7 +92,6 @@ export class VehicleCreateComponent {
             console.log('Marca no encontrada:', data.brand);
           }
 
-          // Rellenar las fotos en el formulario
           data.photos.forEach((photo) => {
             const photoFormGroup = new FormGroup<PhotoType>({
               url: new FormControl(photo.url),
@@ -109,7 +101,10 @@ export class VehicleCreateComponent {
           });
         },
         error: () => {
-          this.toastService.add('Error al cargar los datos del vehículo.', 'danger');
+          this.toastService.add(
+            'Error al cargar los datos del vehículo.',
+            'danger'
+          );
         },
       });
     }
@@ -122,8 +117,7 @@ export class VehicleCreateComponent {
   addPhoto() {
     if (this.form.controls.photos.length >= 5) {
       this.showAlert = true;
-  
-      
+
       setTimeout(() => {
         this.showAlert = false;
       }, 4000);
@@ -137,38 +131,39 @@ export class VehicleCreateComponent {
     }
   }
   onCancel() {
-    
     this.router.navigate(['/home']);
   }
-  
 
   onPhotoChange(url: string | null) {
     this.url = url;
   }
 
-  ngOnInit() {
-    
-  }
-  
+  ngOnInit() {}
 
   onSubmit() {
-    console.log(this.form.value)
-      // Llamar al servicio para crear el vehículo
-      this.service.createVehicle(this.form.value);
-    
-      // Mostrar un alert o un mensaje después de que el vehículo sea creado
-      this.showAlertSucces = true;
-      
-      
-    
-      // Redirigir después de algunos segundos si es necesario
+    console.log(this.form.value);
+
+    if (this.form.invalid) {
+      this.showAlertError = true;
       setTimeout(() => {
-        this.showAlertSucces = false;
-        this.router.navigate(['/vehicles']);
-      }, 4000);
+        this.showAlertError = false;
+      }, 4000)
+      return
+    }
+
+    this.service.createVehicle(this.form.value);
+
+    this.showAlertSucces = true;
+
+    setTimeout(() => {
+      this.showAlertSucces = false;
+      this.router.navigate(['/vehicles']);
+    }, 4000);
+
     
+     
     
-}
+  }
 
   optionChanged(event: HTMLSelectElement) {
     const value: SelectOption = JSON.parse(event.value);

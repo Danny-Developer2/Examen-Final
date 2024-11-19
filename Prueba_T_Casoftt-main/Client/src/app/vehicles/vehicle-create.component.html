@@ -4,7 +4,18 @@
       <div class="toast-body">
         Vehículo creado con éxito.
       </div>
-      <button type="button" class="btn-close btn-close-black ms-auto p-3" (click)="showAlertSucces = false" aria-label="Close"></button>
+      <button type="button" class="btn-close btn-close-black ms-auto p-3" (click)="showAlertError = false" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showAlertError" class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Error al crear el veículo.
+      </div>
     </div>
   </div>
 </div>
@@ -124,7 +135,7 @@
             <br /><br />
             <button
               type="submit"
-              [disabled]="!form.valid"
+              
               class="btn btn-success w-100"
             >
               Guardar Vehículo

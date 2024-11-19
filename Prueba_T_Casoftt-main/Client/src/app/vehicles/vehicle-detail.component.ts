@@ -19,23 +19,21 @@ export class VehicleDetailComponent implements OnInit {
 
   
 
-  vehicle: any;  // Esta propiedad guardará los detalles del vehículo
+  vehicle: any;  
 
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {}
 
   ngOnInit() {
-    // Obtener el id de la URL
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      // Llamar al servicio y suscribirse al Observable
       this.service.getVehicleDetails(id).subscribe(
         (data) => {
-          this.vehicle = data;  // Asignar los datos a la propiedad
-          console.log(this.vehicle);  // Mostrar los datos en consola
+          this.vehicle = data; 
+          console.log(this.vehicle);  
         },
         (error) => {
-          console.error('Error al obtener el vehículo:', error);  // Manejo de errores
+          console.error('Error al obtener el vehículo:', error);  
         }
       );
     }
@@ -45,7 +43,7 @@ export class VehicleDetailComponent implements OnInit {
     this.service.deleteVehicle(vehicleId)
     this.showAlert = true;
 
-    // Opcional: Hacer que el alert desaparezca después de 3 segundos
+    
     setTimeout(() => {
       this.showAlert = false;
       this.router.navigate(['vehicles']);

@@ -1,14 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { setPaginatedResponse, setPaginationHeaders } from './paginationHelper';
-import { PaginatedResult, Pagination } from '../_models/pagination';
-import { Vehicle } from '../_models/vehicle';
 import { VehicleParms } from '../_models/vehicleParams';
 import { catchError, map, Observable, of } from 'rxjs';
-import { CacheService } from './cache.service';
-import { Photo } from '../_models/photo';
-import { environment } from '../../environments/environment.development';
 import { Router, RouterModule } from '@angular/router';
+import { PaginatedResult } from '@_models/pagination';
+import { Vehicle } from '@_models/vehicle';
+import { Photo } from '@_models/photo';
+import { environment } from '@evirement/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +19,7 @@ export class VehiclesService {
   cache = new Map();
   params = signal<VehicleParms>(new VehicleParms());
   private router: Router = new Router();
-  vehicles: any;
+  vehicles: any[] = [];
 
   
 
@@ -31,35 +30,30 @@ export class VehiclesService {
   getVehicles() {
     const cacheKey = Object.values(this.params()).join('-');
     const cachedResponse = this.cache.get(cacheKey);
-  
-    
+
     if (cachedResponse) {
       setPaginatedResponse(cachedResponse, this.paginatedResult);
-      return of(cachedResponse); 
+      return of(cachedResponse);
     }
-  
-    
+
     let params = setPaginationHeaders(
       this.params().pageNumber!,
       this.params().pageSize!
     );
-  
-    
+
     if (this.params()['orderBy']) {
       params = params.append('orderBy', this.params()['orderBy']);
     } else {
       console.warn('El parámetro "orderBy" no está definido y se omitirá.');
     }
-    
-    
+
     if (this.params()['term']) {
       params = params.append('term', this.params()['term'] as string);
     }
     if (this.params()['year']) {
       params = params.append('year', this.params()['year'] as number);
     }
-  
-    
+
     console.log(this.baseUrl);
     return this.http
       .get<Vehicle[]>(this.baseUrl, { observe: 'response', params })
@@ -67,17 +61,16 @@ export class VehiclesService {
         map((response) => {
           setPaginatedResponse(response, this.paginatedResult);
           console.log(response);
-          this.cache.set(cacheKey, response); 
-  
-          return response.body; 
+          this.cache.set(cacheKey, response);
+
+          return response.body;
         }),
         catchError((err) => {
           console.error('Error al obtener los vehículos:', err);
-          return of([]); 
+          return of([]);
         })
       );
   }
-  
 
   getByIdAync(id: number) {
     const itemToReturn: Vehicle = [...this.cache.values()]
@@ -99,29 +92,25 @@ export class VehiclesService {
       .pipe();
   }
 
-  createVehicle(vehicleData: any ): void  {
-    
-      // Asegúrate de que el objeto updatedVehicle tiene la estructura adecuada
-      this.http
-        .post<any>(`${this.baseUrl}/`, vehicleData, {
-          observe: 'response',
-        })
-        .subscribe(
-          (response) => {
-            console.log('Status code:', response.status);
-            console.log('Response body:', response.body);
-            if (response.status === 200) {
-              console.log('Vehicle updated successfully');
-              this.getVehicles(); // Puedes volver a cargar la lista de vehículos
-              // Lógica adicional como mostrar alertas o redirigir
-            }
-          },
-          (error) => {
-            console.error('Error updating vehicle:', error);
-            console.error('Error status:', error.status); // Para atrapar el código de estado del error
+  createVehicle(vehicleData: any): void {
+    this.http
+      .post<any>(`${this.baseUrl}/`, vehicleData, {
+        observe: 'response',
+      })
+      .subscribe(
+        (response) => {
+          console.log('Status code:', response.status);
+          console.log('Response body:', response.body);
+          if (response.status === 200) {
+            console.log('Vehicle updated successfully');
+            this.getVehicles(); 
           }
-        );
-    
+        },
+        (error) => {
+          console.error('Error updating vehicle:', error);
+          console.error('Error status:', error.status); 
+        }
+      );
   }
   navigateToVehicle1(vehicleId: number | null | undefined) {
     if (vehicleId !== null && vehicleId !== undefined) {
@@ -162,13 +151,11 @@ export class VehiclesService {
             if (response.status === 200) {
               console.log('Vehicle deleted successfully');
               this.getVehicles();
-              // this.router.navigate(['vehicles']); // Redirigir a la lista de vehículos
-              // Lógica adicional como mostrar alertas o redirigir
             }
           },
           (error) => {
             console.error('Error deleting vehicle:', error);
-            console.error('Error status:', error.status); // Para atrapar el código de estado del error
+            console.error('Error status:', error.status); 
           }
         );
     } else {
@@ -181,7 +168,6 @@ export class VehiclesService {
     updatedVehicle: any
   ): void {
     if (vehicleId !== null && vehicleId !== undefined) {
-      // Asegúrate de que el objeto updatedVehicle tiene la estructura adecuada
       this.http
         .put(`${this.baseUrl}/${vehicleId}/edit`, updatedVehicle, {
           observe: 'response',
@@ -192,36 +178,28 @@ export class VehiclesService {
             console.log('Response body:', response.body);
             if (response.status === 200) {
               console.log('Vehicle updated successfully');
-
-            
+  
               
-              // Puedes también mostrar un mensaje de éxito o alerta
+              const index = this.vehicles.findIndex((v: { id: number; }) => v.id === vehicleId);
+              if (index !== -1) {
+                this.vehicles[index] = { ...this.vehicles[index], ...updatedVehicle };
+              }
+  
+              // Otras acciones adicionales
               // this.toastService.add('Vehículo actualizado con éxito', 'success');
-  
-              // Redirigir a la lista de vehículos
-              setTimeout(() => {
-                this.router.navigate([`vehicles`]);
-              }, 4000); 
-            
-  
-              // Recargar los vehículos si es necesario, aunque ya están actualizados
-              // this.getVehicles(); // Esta línea ya no es necesaria si actualizas localmente
             }
           },
           (error) => {
             console.error('Error updating vehicle:', error);
-            console.error('Error status:', error.status); // Para atrapar el código de estado del error
-          //   this.toastService.add('Error al actualizar el vehículo', 'danger');
+            // this.toastService.add('Error al actualizar el vehículo', 'danger');
           }
         );
     } else {
       console.error('ID de vehículo no válido');
-      // this.toastService.add('ID de vehículo no válido', 'danger');
     }
   }
   
 
-  
   getVehicleDetails(id: string): Observable<any> {
     const url = `${this.baseUrl}/${id}`;
     return this.http.get<any>(url);

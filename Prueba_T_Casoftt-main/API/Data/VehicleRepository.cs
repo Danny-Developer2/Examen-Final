@@ -49,24 +49,39 @@ public class VehicleRepository(DataContext context, IMapper mapper) : IVehicleRe
         ;
 
     public async Task<PagedList<VehicleDto>> GetPagedListAsync(VehicleParams param)
-    
     {
-        IQueryable<Vehicle> query = context.Vehicles.AsQueryable();
-        
+        IQueryable<Vehicle>? query = context.Vehicles
+            .Include(v => v.VehicleBrand.Brand)
+            .Include(x => x.VehiclePhotos).ThenInclude(x => x.Photo)
+            .AsNoTracking()
+            .AsQueryable()
+        ;
 
-        if (!string.IsNullOrEmpty(param.Term))
-        {
-            query = query.Where(x => !string.IsNullOrEmpty(x.Model) &&
-                x.Model == param.Term
+        if(!string.IsNullOrEmpty(param.Term))
+        {   
+            query = query.Where(x => 
+                !string.IsNullOrEmpty(x.Model) && x.Model.Contains(param.Term)
+                ||
+                x.Year.HasValue && x.Year.ToString() == param.Term
+                ||
+                x.VehicleBrand != null &&
+                x.VehicleBrand.Brand != null &&
+                !string.IsNullOrEmpty(x.VehicleBrand.Brand.Name) &&
+                x.VehicleBrand.Brand.Name.Contains(param.Term)
+                ||
+                !string.IsNullOrEmpty(x.Model) && x.Model == param.Term
             );
         }
-       
 
-        return await PagedList<VehicleDto>.CreateAsync(
-            query.ProjectTo<VehicleDto>(mapper.ConfigurationProvider),
-            param.PageNumber,
-            param.PageSize
-        );
+        if(param.Year.HasValue && param.Year.Value > 0) {
+            query = query.Where(v => v.Year == param.Year.Value);
+        } 
+
+        PagedList<VehicleDto> pagedList = await PagedList<VehicleDto>.CreateAsync(
+            query.ProjectTo<VehicleDto>(mapper.ConfigurationProvider), param.PageNumber, param.PageSize)
+        ;
+
+        return pagedList;
     }
 
 

@@ -1,4 +1,11 @@
-import { Component, ChangeDetectorRef, inject, signal, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  inject,
+  signal,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -35,7 +42,7 @@ type FormType = {
   templateUrl: './vehicle-update.component.html',
 })
 export class VehicleUpdateComponent {
-  response: any
+  response: any;
   router = inject(Router);
   error = signal<BadRequest | null>(null);
   toastService = inject(ToastService);
@@ -47,6 +54,7 @@ export class VehicleUpdateComponent {
   showAlertSucces: boolean = false;
   vehicleId: number | null = null;
   vehicles: Vehicle[] = [];
+  showAlertError: boolean = false;
   route = inject(ActivatedRoute);
   brandOptions: SelectOption[] = [];
   form: FormGroup<FormType> = new FormGroup<FormType>({
@@ -57,9 +65,6 @@ export class VehicleUpdateComponent {
     photos: new FormArray<FormGroup<PhotoType>>([]),
   });
 
-
-  
-
   submitted = signal<boolean>(false);
 
   constructor(private cdr: ChangeDetectorRef) {
@@ -67,19 +72,16 @@ export class VehicleUpdateComponent {
       ? parseInt(this.route.snapshot.paramMap.get('id')!)
       : null;
 
-    // Obtener opciones de marcas al inicializar el componente
     this.brandsService.getOptions().subscribe((options) => {
       this.brandOptions = options;
     });
 
-    // Cargar datos del vehículo si el ID es válido
     const id = this.route.snapshot.paramMap.get('id');
     if (id !== null) {
       this.service.getById(parseInt(id)).subscribe({
         next: (data: Vehicle) => {
           console.log('Datos del vehículo', data);
 
-          // Verificar que la marca esté presente y asignarla
           const selectedBrand = this.brandOptions.find(
             (brand) => brand.id === data.brand?.id
           );
@@ -89,7 +91,6 @@ export class VehicleUpdateComponent {
             console.log('Marca no encontrada:', data.brand);
           }
 
-          // Rellenar las fotos en el formulario
           data.photos.forEach((photo) => {
             const photoFormGroup = new FormGroup<PhotoType>({
               url: new FormControl(photo.url),
@@ -98,11 +99,13 @@ export class VehicleUpdateComponent {
             this.form.controls.photos.push(photoFormGroup);
           });
 
-          // Forzar la detección de cambios para que Angular actualice la vista
           this.cdr.detectChanges();
         },
         error: () => {
-          this.toastService.add('Error al cargar los datos del vehículo.', 'danger');
+          this.toastService.add(
+            'Error al cargar los datos del vehículo.',
+            'danger'
+          );
         },
       });
     }
@@ -141,7 +144,6 @@ export class VehicleUpdateComponent {
       next: (data: Vehicle[]) => {
         this.vehicles = data;
 
-        // Buscar la marca seleccionada usando vehicleId
         const vehicle = this.vehicles.find((v) => v.id === this.vehicleId);
         if (vehicle) {
           const selectedBrand = this.brandOptions.find(
@@ -152,14 +154,12 @@ export class VehicleUpdateComponent {
             this.form.controls.brand.setValue(selectedBrand);
           }
 
-          // Rellenar el formulario con los valores del vehículo
           this.form.patchValue({
             model: vehicle.model,
             year: vehicle.year,
             color: vehicle.color,
           });
 
-          // Asegurarse de que las fotos se asignen correctamente
           vehicle.photos.forEach((photo) => {
             const photoFormGroup = new FormGroup<PhotoType>({
               url: new FormControl(photo.url),
@@ -168,7 +168,6 @@ export class VehicleUpdateComponent {
             this.form.controls.photos.push(photoFormGroup);
           });
 
-          // Forzar la detección de cambios para que Angular actualice la vista
           this.cdr.detectChanges();
         }
       },
@@ -181,17 +180,31 @@ export class VehicleUpdateComponent {
   onSubmit() {
     console.log('Formulario enviado');
     console.log(this.vehicleId, this.form.value);
+
+    if (this.form.invalid) {
+      this.showAlertError = true;
+      setTimeout(() => {
+        this.showAlertError = false;
+      }, 4000);
+      return;
+    }
     this.response = this.service.updateVehicle(this.vehicleId, this.form.value);
     this.showAlertSucces = true;
-      setTimeout(() => {
-        this.showAlertSucces = false;
-      }, 4000); 
+    setTimeout(() => {
+      this.showAlertSucces = false;
+      this.router.navigate([`/vehicle/${this.vehicleId}`]).then(() => {
+        setTimeout(() => {
+          this.router.navigate(['/vehicles']);
+        }, 2000); 
+      });
+      
+
+      
+    }, 4000);
   }
 
   optionChanged(event: HTMLSelectElement) {
     const value: SelectOption = JSON.parse(event.value);
     this.form.controls.brand.patchValue(value);
   }
-  
-  
 }

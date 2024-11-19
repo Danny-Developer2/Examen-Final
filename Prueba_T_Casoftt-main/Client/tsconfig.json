@@ -23,7 +23,8 @@
     "paths": {
     "@_models/*": ["src/app/_models/*"],
     "@_types/*": ["src/app/_types/*"],
-    "@services/*": ["src/app/services/*"]
+    "@services/*": ["src/app/services/*"],
+    "@evirement/*": ["src/environments/*"]
     },
     "lib": [
       "ES2022",
