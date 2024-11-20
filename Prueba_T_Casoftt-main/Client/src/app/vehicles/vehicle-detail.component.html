@@ -7,7 +7,12 @@
 </head>
 
 <div class="container mt-5">
-  <div *ngIf="showAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="font-family: 'Poppins', sans-serif;">
+  <div
+    *ngIf="showAlert"
+    class="alert alert-success alert-dismissible fade show"
+    role="alert"
+    style="font-family: 'Poppins', sans-serif"
+  >
     <strong>¡Éxito!</strong> El vehículo fue eliminado correctamente.
     <button type="button" class="btn-close" (click)="closeAlert()"></button>
   </div>
@@ -21,7 +26,7 @@
       >
         Eliminar
       </button>
-  
+
       <button
         class="btn btn-success mx-2"
         style="font-family: 'Poppins', sans-serif"
@@ -31,45 +36,78 @@
       </button>
     </div>
   </div>
-  
+
   <div class="col-md-4 mx-auto my-4">
-    <div class="card shadow-lg h-100" style="max-width: 600px; border-radius: 12px; overflow: hidden;">
-      
-      <div *ngIf="vehicle.photos.length > 1" id="vehicleCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div
+      class="card shadow-lg h-100"
+      style="max-width: 600px; border-radius: 12px; overflow: hidden"
+    >
+      <div
+        *ngIf="vehicle.photos.length > 1"
+        id="vehicleCarousel"
+        class="carousel slide"
+        data-bs-ride="carousel"
+      >
         <div class="carousel-inner">
-          <div class="carousel-item active" *ngFor="let photo of vehicle.photos; let i = index">
+          <div
+            class="carousel-item active"
+            *ngFor="let photo of vehicle.photos; let i = index"
+          >
             <img
               [src]="photo?.url"
               class="d-block w-100 img-fluid"
               alt="Foto del vehículo"
-              style="object-fit: cover; height: 300px; width: 500px;"
+              style="object-fit: cover; height: 300px; width: 500px"
             />
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="prev">
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#vehicleCarousel"
+          data-bs-slide="prev"
+        >
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Anterior</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="next">
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#vehicleCarousel"
+          data-bs-slide="next"
+        >
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Siguiente</span>
         </button>
       </div>
-  
-      
+
+      @if (vehicle.photos.length === 0) {
+        <p style="object-fit: cover; height: 200px; width: 420px; text-align: center; display: flex; justify-content: center; align-items: center;">
+          No existen imágenes disponibles.
+        </p>
+        
+      }
+
       <img
         *ngIf="vehicle.photos.length === 1"
         [src]="vehicle.photos[0]?.url"
         class="card-img-top img-fluid"
         alt="Foto del vehículo"
-        style="object-fit: cover; height: 200px; width: 500px;"
+        style="object-fit: cover; height: 200px; width: 500px"
       />
-  
+
       <div class="card-body">
-        <h5 class="card-title text-primary fw-bold">{{vehicle.model}}: {{vehicle.year}}</h5>
-        <h6 class="card-text w-100 text-secondary"><strong>Modelo:</strong> {{ vehicle.brand!.name }}</h6>
-        <p class="card-text"><strong>Color:</strong> {{ vehicle.color }}</p>
-        <p class="card-text"><strong>ID:</strong> {{ vehicle.id }}</p>
+        <div class="text-center">
+          <h5 class="card-title text-primary fw-bold">
+            <strong>Modelo:</strong>  {{ vehicle.model }} -> {{ vehicle.year }}
+          </h5>
+          <h6 class="card-text w-100 text-secondary">
+            <strong>Marca:</strong> {{ vehicle.brand!.name }}
+          </h6>
+          <p class="card-text"><strong>Color:</strong> {{ vehicle.color }}</p>
+          <p class="card-text"><strong>ID:</strong> {{ vehicle.id }}</p>
+        
+        
         <h6>Fotos adicionales:</h6>
         <div class="row">
           <div class="col-4" *ngFor="let photo of vehicle.photos">
@@ -77,17 +115,11 @@
               [src]="photo.url"
               alt="Foto adicional del vehículo"
               class="img-fluid rounded mb-2"
-              style="height: 50px;  width: 100px; object-fit: cover"
+              style="height: 50px; width: 100px; object-fit: cover"
             />
-
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  
-  
-
-  
-
- 
-            
-
+</div>

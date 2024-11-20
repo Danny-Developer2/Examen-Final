@@ -11,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SelectOption } from '@_models/selectOption';
 import { BadRequest } from '@_models/badRequest';
-import { ToastService } from '@services/toast.service';
 import { BrandsService } from '@services/brands.service';
 import { VehiclesService } from '@services/vehicles.service';
 import { Vehicle } from '@_models/vehicle';
@@ -43,7 +42,6 @@ type FormType = {
 export class VehicleCreateComponent {
   router = inject(Router);
   error = signal<BadRequest | null>(null);
-  toastService = inject(ToastService);
   sanitizer = inject(DomSanitizer);
   url: string | null = null;
   private brandsService = inject(BrandsService);
@@ -53,6 +51,7 @@ export class VehicleCreateComponent {
   showAlertSucces: boolean = false;
   showAlertError: boolean = false;
   route = inject(ActivatedRoute);
+  errorMessage: string | undefined;
 
   brandOptions: SelectOption[] = [];
 
@@ -100,11 +99,8 @@ export class VehicleCreateComponent {
             this.form.controls.photos.push(photoFormGroup);
           });
         },
-        error: () => {
-          this.toastService.add(
-            'Error al cargar los datos del vehículo.',
-            'danger'
-          );
+        error: (e) => {
+          console.error(e)
         },
       });
     }
@@ -141,28 +137,21 @@ export class VehicleCreateComponent {
   ngOnInit() {}
 
   onSubmit() {
-    console.log(this.form.value);
-
-    if (this.form.invalid) {
-      this.showAlertError = true;
-      setTimeout(() => {
-        this.showAlertError = false;
-      }, 4000)
-      return
-    }
-
-    this.service.createVehicle(this.form.value);
-
-    this.showAlertSucces = true;
-
-    setTimeout(() => {
-      this.showAlertSucces = false;
-      this.router.navigate(['/vehicles']);
-    }, 4000);
-
     
-     
-    
+    this.service.createVehicle(this.form.value).subscribe({
+      next: (response: Vehicle) => {
+        this.showAlertSucces = true;
+        setTimeout(() => {
+          this.showAlertSucces = false;
+          this.router.navigate(['/vehicles']);
+        }, 4000);
+      },
+      error: (error: BadRequest) => {
+        this.error.set(error);
+        this.showAlertError = true;
+      },
+    });
+   
   }
 
   optionChanged(event: HTMLSelectElement) {

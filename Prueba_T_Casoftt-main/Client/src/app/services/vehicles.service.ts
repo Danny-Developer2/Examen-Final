@@ -92,26 +92,11 @@ export class VehiclesService {
       .pipe();
   }
 
-  createVehicle(vehicleData: any): void {
-    this.http
-      .post<any>(`${this.baseUrl}/`, vehicleData, {
-        observe: 'response',
-      })
-      .subscribe(
-        (response) => {
-          console.log('Status code:', response.status);
-          console.log('Response body:', response.body);
-          if (response.status === 200) {
-            console.log('Vehicle updated successfully');
-            this.getVehicles(); 
-          }
-        },
-        (error) => {
-          console.error('Error updating vehicle:', error);
-          console.error('Error status:', error.status); 
-        }
-      );
+  createVehicle(vehicleData: any): Observable<Vehicle> {
+    this.cache.clear();
+    return this.http.post<Vehicle>(`${this.baseUrl}`, vehicleData);
   }
+ 
   navigateToVehicle1(vehicleId: number | null | undefined) {
     if (vehicleId !== null && vehicleId !== undefined) {
       this.router.navigate([`vehicle/`, vehicleId]);
@@ -154,6 +139,7 @@ export class VehiclesService {
             }
           },
           (error) => {
+            console.log(error)
             console.error('Error deleting vehicle:', error);
             console.error('Error status:', error.status); 
           }
@@ -163,41 +149,14 @@ export class VehiclesService {
     }
   }
 
-  updateVehicle(
-    vehicleId: number | null | undefined,
-    updatedVehicle: any
-  ): void {
-    if (vehicleId !== null && vehicleId !== undefined) {
-      this.http
-        .put(`${this.baseUrl}/${vehicleId}/edit`, updatedVehicle, {
-          observe: 'response',
-        })
-        .subscribe(
-          (response) => {
-            console.log('Status code:', response.status);
-            console.log('Response body:', response.body);
-            if (response.status === 200) {
-              console.log('Vehicle updated successfully');
-  
-              
-              const index = this.vehicles.findIndex((v: { id: number; }) => v.id === vehicleId);
-              if (index !== -1) {
-                this.vehicles[index] = { ...this.vehicles[index], ...updatedVehicle };
-              }
-  
-              // Otras acciones adicionales
-              // this.toastService.add('Vehículo actualizado con éxito', 'success');
-            }
-          },
-          (error) => {
-            console.error('Error updating vehicle:', error);
-            // this.toastService.add('Error al actualizar el vehículo', 'danger');
-          }
-        );
-    } else {
-      console.error('ID de vehículo no válido');
-    }
+
+  updateVehicle(  vehicleId: number | null | undefined,
+    updatedVehicle: any): Observable<Vehicle> {
+    this.cache.clear();
+    return this.http.put<Vehicle>(`${this.baseUrl}/${vehicleId}/edit`, updatedVehicle);
   }
+ 
+ 
   
 
   getVehicleDetails(id: string): Observable<any> {
@@ -205,3 +164,7 @@ export class VehiclesService {
     return this.http.get<any>(url);
   }
 }
+function handleError(error: any) {
+  throw new Error('Function not implemented.');
+}
+
