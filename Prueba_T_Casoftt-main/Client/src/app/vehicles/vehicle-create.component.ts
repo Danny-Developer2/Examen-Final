@@ -46,7 +46,7 @@ export class VehicleCreateComponent {
   url: string | null = null;
   private brandsService = inject(BrandsService);
   service = inject(VehiclesService);
-  showAlert: boolean = false;
+  showAlertImagenes: boolean = false;
   vehicleId: number | null = null;
   showAlertSucces: boolean = false;
   showAlertError: boolean = false;
@@ -112,10 +112,10 @@ export class VehicleCreateComponent {
 
   addPhoto() {
     if (this.form.controls.photos.length >= 5) {
-      this.showAlert = true;
+      this.showAlertImagenes = true;
 
       setTimeout(() => {
-        this.showAlert = false;
+        this.showAlertImagenes = false;
       }, 4000);
     } else {
       const photoFormGroup = new FormGroup({
@@ -159,8 +159,5 @@ export class VehicleCreateComponent {
     this.form.controls.brand.patchValue(value);
   }
 
-  closeAlert(): void {
-    this.showAlert = false;
-    this.router.navigate(['vehicles']);
-  }
+  
 }

@@ -55,6 +55,7 @@ export class VehicleUpdateComponent {
   showAlertError: boolean = false;
   route = inject(ActivatedRoute);
   brandOptions: SelectOption[] = [];
+  showAlertImagenes:boolean = false
   form: FormGroup<FormType> = new FormGroup<FormType>({
     brand: new FormControl<SelectOption | null>(null),
     model: new FormControl<string | null>(null),
@@ -115,9 +116,9 @@ export class VehicleUpdateComponent {
 
   addPhoto() {
     if (this.form.controls.photos.length >= 5) {
-      this.showAlert = true;
+      this.showAlertImagenes = true;
       setTimeout(() => {
-        this.showAlert = false;
+        this.showAlertImagenes = false;
       }, 4000);
     } else {
       const photoFormGroup = new FormGroup<PhotoType>({

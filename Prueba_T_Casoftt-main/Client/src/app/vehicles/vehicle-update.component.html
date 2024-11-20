@@ -18,10 +18,20 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="showAlertImagenes" class="toast-container position-fixed bottom-2 end-0 p-3">
+  <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        No es posible agregar más de 5 fotos.
+      </div>
+    </div>
+  </div>
+</div>
 <!--  -->
 
 <div class="container bg-light p-4 rounded shadow-lg position-fixed"
-     style="top: 100px; left: 50%; transform: translateX(-50%); max-height: 50vh; display: flex;">
+     style="top: 100px; left: 50%; transform: translateX(-50%); max-height: 50vh; display: flex; margin-top: 80px;">
 
   <!-- Imagen del vehículo -->
   <div class="col-md-6 col-lg-6 text-center mb-2">
@@ -45,16 +55,25 @@
       <div class="form-group mb-3">
         <label for="model" class="form-label">Modelo</label>
         <input class="form-control form-control-sm" type="text" id="model" formControlName="model" placeholder="Ingrese el modelo">
+        <div *ngIf="form.get('model')?.touched && form.get('model')?.invalid" style="color: red;">
+          <span *ngIf="form.get('model')?.hasError('required')">Este campo es requerido</span>
+        </div>
       </div>
 
       <div class="form-group mb-3">
         <label for="year" class="form-label">Año</label>
         <input type="number" id="year" formControlName="year" placeholder="Ingrese el año" class="form-control form-control-sm">
+        <div *ngIf="form.get('year')?.touched && form.get('year')?.invalid" style="color: red;">
+          <span *ngIf="form.get('year')?.hasError('required')">Este campo es requerido</span>
+        </div>
       </div>
 
       <div class="form-group mb-3">
         <label for="color" class="form-label">Color</label>
         <input type="text" id="color" formControlName="color" placeholder="Ingrese el color" class="form-control form-control-sm">
+        <div *ngIf="form.get('color')?.touched && form.get('color')?.invalid" style="color: red;">
+          <span *ngIf="form.get('color')?.hasError('required')">Este campo es requerido</span>
+        </div>
       </div>
 
       <!-- Fotos -->
@@ -68,7 +87,7 @@
           <button type="button" (click)="deletePhoto(i)" class="btn btn-danger mt-2">Eliminar Foto</button>
         </div>
 
-        <div *ngIf="form.get('photos')?.invalid && form.get('photos')?.touched" class="alert alert-warning" role="alert">
+        <div *ngIf="form.get('photos')?.invalid && form.get('photos')?.touched || form.value.photos?.length === 0"  class="alert alert-warning" role="alert">
           Debes agregar al menos una foto.
         </div>
       </div>
