@@ -53,6 +53,16 @@ export class VehicleDetailComponent implements OnInit {
     this.service.navigateToVehicleUpdate(vehicleId);
     
   }
+
+
+  confirmDelete(vehicleId: number): void {
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este vehículo?');
+    
+    if (confirmDelete) {
+      this.deleteActionVehicle(vehicleId); 
+    }
+  }
+  
     
 
     

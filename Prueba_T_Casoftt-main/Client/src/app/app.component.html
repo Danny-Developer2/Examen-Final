@@ -1,10 +1,10 @@
 <div class="d-flex flex-column min-vh-100">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-primary shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary shadow-sm col-md-12">
     <div class="container">
-      <a class="navbar-brand fw-bold text-light d-flex align-items-center" href="/home">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrzbLCC5g32FJj0xTeCAX1S9m_SKQneXDM7g&s" alt="Icono de un Carro" width="30" height="24" class="d-inline-block align-text-top me-3">
-        Cars
+      <a class="flex-column flex navbar-brand fw-bold text-light d-flex align-items-center" href="/home">
+        <i class="fas fa-car">Ford</i>
+        
       </a>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
@@ -22,22 +22,24 @@
     </div>
   </nav>
 
-  <!-- Main Content -->
+ 
   <main class="flex-grow-1">
     <router-outlet></router-outlet>
   </main>
 
+ 
+
   <!-- Footer -->
-  <footer class="bg-dark text-light py-4 mt-5">
+  <footer class="bg-dark text-light py-3 mt-0 ">
     <div class="container">
       <div class="row">
-        <!-- Columna para información de la empresa -->
+        
         <div class="col-md-4 mb-3">
           <h5 class="fw-bold">Cars Company</h5>
           <p>© 2024 Cars Company. Todos los derechos reservados.</p>
           <p>Dirección: Calle Ficticia 123, Ciudad, País</p>
         </div>
-        <!-- Columna para enlaces útiles -->
+        
         <div class="col-md-4 mb-3">
           <h5 class="fw-bold">Enlaces útiles</h5>
           <ul class="list-unstyled">
@@ -46,7 +48,6 @@
             <li><a href="#" class="text-light text-decoration-none">Soporte</a></li>
           </ul>
         </div>
-        <!-- Columna para redes sociales -->
         <div class="col-md-4 mb-3">
           <h5 class="fw-bold">Síguenos</h5>
           <ul class="list-unstyled d-flex">
