@@ -2563,24 +2563,26 @@
     ]
   },
   "packageFolders": {
-    "/Users/juandanielluevanoruiz/.nuget/packages/": {}
+    "C:\\Users\\ju4nl\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/juandanielluevanoruiz/Desktop/Examen/Examen-Final/Prueba_T_Casoftt-main/API/API.csproj",
-      "projectName": "API",
-      "projectPath": "/Users/juandanielluevanoruiz/Desktop/Examen/Examen-Final/Prueba_T_Casoftt-main/API/API.csproj",
-      "packagesPath": "/Users/juandanielluevanoruiz/.nuget/packages/",
-      "outputPath": "/Users/juandanielluevanoruiz/Desktop/Examen/Examen-Final/Prueba_T_Casoftt-main/API/obj/",
+      "projectUniqueName": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\Api.csproj",
+      "projectName": "Api",
+      "projectPath": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\Api.csproj",
+      "packagesPath": "C:\\Users\\ju4nl\\.nuget\\packages\\",
+      "outputPath": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/juandanielluevanoruiz/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\ju4nl\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2644,16 +2646,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error al obtener los datos de vulnerabilidad del paquete: Access to the path '/Users/juandanielluevanoruiz/.local/share/NuGet/http-cache/670c1461c29885f9aa22c281d8b7da90845b38e4$ps:_api.nuget.org_v3_index.json/vuln_index.dat-new' is denied."
-    }
-  ]
+  }
 }

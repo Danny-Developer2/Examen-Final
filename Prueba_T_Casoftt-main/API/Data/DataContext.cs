@@ -59,9 +59,9 @@ namespace API.Data {
                 
             ;
              builder.Entity<Vehicle>()
-                .HasOne(x => x.VehicleBrand)  // Si tienes una relación OneToOne con VehicleBrand
+                .HasOne(x => x.VehicleBrand)  
                 .WithOne(x => x.Vehicle)
-                .OnDelete(DeleteBehavior.Cascade); // Esto asegura que el Vehicle sea eliminado en cascada si tiene una relación One-to-One
+                .OnDelete(DeleteBehavior.Cascade); 
         
         }
         

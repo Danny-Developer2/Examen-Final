@@ -40,3 +40,72 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# .NET build files
+# Ignore files from builds
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# User-specific files for Visual Studio for Mac
+.vscode/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]Release/
+[Dd]ebug/
+x64/
+x86/
+[Aa]rmeabi/
+[Aa]rmeabi-v7a/
+[Aa]rm64/
+
+# Uncomment if you have tasks that create project's project's task output
+#bin/
+#obj/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer package contents
+*.psess
+*.vsp
+*.vspx
+
+# Windows Installer patch files
+*.vsix
+*.nupkg
+*.snupkg
+*.pdb
+*.lib
+*.ilk
+*.vssscc
+.vs2019/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# .NET build files
+# Ignore files from builds
+bin/
+obj/
+
+# Windows Installer
+*.cab
+*.msi
+*.msm
+*.msp
+
+# ASP.NET Scaffoldingr
+ScaffoldingReadMe.txt

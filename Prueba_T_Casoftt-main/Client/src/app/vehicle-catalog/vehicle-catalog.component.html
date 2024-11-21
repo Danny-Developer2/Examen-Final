@@ -67,33 +67,37 @@
                   <span *ngIf="vehicle?.id === null || vehicle?.id === undefined">Marca no disponible</span>
                 </td>
                 <td>
-                  <div *ngIf="vehicle.photos.length > 0; else noPhotos">
                     <div class="d-flex justify-content-start flex-wrap">
-                      <a *ngIf="vehicle?.id !== null && vehicle?.id !== undefined" 
-                         (click)="navigateToVehicle(vehicle.id)">
-                        <img [src]="vehicle.photos[0]!.url" 
-                             alt="Foto principal del vehículo" 
-                             class="img-fluid img-thumbnail me-2 mb-2" 
-                             style="object-fit: cover; border-radius: 10px; max-width: 100px; max-height: 100px;">
-                      </a>
-                      <div *ngIf="vehicle.photos.length > 1" class="ms-3 align-self-center">
-                        <a href="/vehicle/{{vehicle.id}}" (click)="showMorePhotos = !showMorePhotos">
-                          Ver más
-                        </a>
-                      </div>
-                    </div>
-                    <div *ngIf="showMorePhotos" class="d-flex justify-content-start flex-wrap mt-2">
-                      <div *ngFor="let photo of vehicle.photos.slice(1)" class="me-2 mb-2">
-                        <img [src]="photo.url" 
-                             alt="Foto adicional del vehículo" 
-                             class="img-fluid img-thumbnail" 
-                             style="object-fit: cover; border-radius: 10px; max-width: 80px; max-height: 80px;">
-                      </div>
-                    </div>
-                  </div>
-                  <ng-template #noPhotos>
-                    <span>No hay fotos disponibles</span>
-                  </ng-template>
+                       @if(vehicle?.id !== null && vehicle?.id !== undefined) {
+                        <a 
+                        (click)="navigateToVehicle(vehicle.id)">
+                       <img [src]="vehicle.photos.length > 0 ? vehicle.photos[0].url : 'img/placeholder.png'" 
+                            alt="Foto principal del vehículo" 
+                            class="img-fluid img-thumbnail me-2 mb-2" 
+                            style="object-fit: cover; border-radius: 10px; max-width: 100px; max-height: 100px;">
+                     </a>  
+                       }
+                      
+                     @if(vehicle.photos.length > 1) {
+                       <div class="ms-3 align-self-center">
+                         <a [routerLink]="['vehicle', vehicle.id]" (click)="showMorePhotos = !showMorePhotos">
+                           Ver más
+                         </a>
+                       </div>
+                     }
+                   </div>
+                   @if(showMorePhotos) {
+                    <div class="d-flex justify-content-start flex-wrap mt-2">
+                      @for(photo of vehicle.photos.slice(1); let idx = $index; track idx) {
+                        <div class="me-2 mb-2">
+                          <img [src]="photo.url" 
+                               alt="Foto adicional del vehículo" 
+                               class="img-fluid img-thumbnail" 
+                               style="object-fit: cover; border-radius: 10px; max-width: 80px; max-height: 80px;">
+                        </div>
+                      }
+                    </div> 
+                   }
                 </td>
               </tr>
             </tbody>
