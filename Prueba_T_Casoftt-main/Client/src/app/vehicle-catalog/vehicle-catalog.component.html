@@ -78,7 +78,8 @@
             >
               <td>
                 @if(vehicle.id !== null && vehicle.id !== undefined){
-                <a (click)="navigateToVehicle(vehicle.id)">
+                
+                <a (click)="navigateToVehicle(vehicle.id)" style="cursor: pointer; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">
                   {{ vehicle.id }}
                 </a>
                 } @if(vehicle.id === null || vehicle.id === undefined){
@@ -88,7 +89,7 @@
               <td>
                 @if(vehicle.id !== null && vehicle.id !== undefined ) {
 
-                <a (click)="navigateToVehicle(vehicle.id)">
+                <a (click)="navigateToVehicle(vehicle.id)" style="cursor: pointer; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">
                   {{ vehicle.model }}
                 </a>
                 } @if(vehicle.id === null || vehicle.id === undefined){
@@ -99,7 +100,7 @@
               <td>
                 @if(vehicle.id !== null && vehicle.id !== undefined){
 
-                <a (click)="navigateToVehicle(vehicle.id)">
+                <a (click)="navigateToVehicle(vehicle.id)" style="cursor: pointer;  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">
                   {{ vehicle.year }}
                 </a>
                 } @if(vehicle.id === null || vehicle === undefined){
@@ -110,7 +111,7 @@
               <td>
                 @if(vehicle.id !== null && vehicle.id !== undefined){
 
-                <a (click)="navigateToVehicle(vehicle.id)">
+                <a (click)="navigateToVehicle(vehicle.id)"style="cursor: pointer; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; ">
                   {{ vehicle.color }}
                 </a>
                 } @if( vehicle.id === null || vehicle.id === undefined){
@@ -121,7 +122,7 @@
               <td>
                 @if( vehicle.id !== null && vehicle.id !== undefined ){
 
-                <a (click)="navigateToVehicle(vehicle.id)">
+                <a (click)="navigateToVehicle(vehicle.id)"style="cursor: pointer; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">
                   {{
                     vehicle.brand
                       ? vehicle.brand.name || vehicle.brand
@@ -150,6 +151,8 @@
                         border-radius: 10px;
                         max-width: 100px;
                         max-height: 100px;
+                        cursor: pointer;
+                        
                       "
                     />
                   </a>

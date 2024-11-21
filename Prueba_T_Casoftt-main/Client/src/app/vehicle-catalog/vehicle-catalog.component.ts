@@ -19,6 +19,7 @@ import { PaginatedResult } from '@_models/pagination';
 import { Vehicle } from '@_models/vehicle';
 import { SelectOption } from '@_models/selectOption';
 import { PipeFiltersPipe } from 'src/app/pipe-filtes/pipe-filters.pipe';
+import { ErrorServices } from '@services/errors.service';
 
 @Component({
   selector: 'app-vehicle-catalog',
@@ -41,6 +42,8 @@ export class VehiclesComponent implements OnInit, OnDestroy {
 
   private service = inject(VehiclesService);
   private searchTerms = new Subject<string>();
+  private errors = inject(ErrorServices)
+  
 
   term: string = '';
   year: number | null = null;
@@ -127,4 +130,8 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     this.service.resetVehicleParams();
     this.service.getVehicles();
   }
+
+  // Provisional para prruebas
+
+ 
 }
