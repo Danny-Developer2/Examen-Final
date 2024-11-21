@@ -1,18 +1,19 @@
-<div class="container mt-4" >
-    <h1 class="text-center mb-4" style="margin-top: 80px;">Lista de Marcas</h1>
-    <table class="table table-striped table-hover">
-      <thead class="table-dark">
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Nombre</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let brand of brandOptions">
-          <td>{{ brand.id }}</td>
-          <td>{{ brand.name }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+<div class="container mt-4">
+  <h1 class="text-center mb-4" style="margin-top: 80px">Lista de Marcas</h1>
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (brand of brandOptions; track brand.id){
+      <tr>
+        <td>{{ brand.id }}</td>
+        <td>{{ brand.name }}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

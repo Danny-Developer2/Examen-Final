@@ -1,54 +1,71 @@
 <div class="d-flex flex-column min-vh-100">
- <!--  -->
- <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <div class="container-fluid">
-  
-    <a class="navbar-brand" href="#"><i class="fas fa-car">Ford</i></a>
-    
-        
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav me-auto mb-2 mb-md-0">
-        <li class="nav-item">
-          <a class="nav-link text-light fs-5 px-3 py-2 rounded-pill transition-all hover-shadow" [routerLink]="'vehicles'">Vehicles</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-light fs-5 px-3 py-2 rounded-pill transition-all hover-shadow" [routerLink]="'vehicle/create'">Create</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-light fs-5 px-3 py-2 rounded-pill transition-all hover-shadow" [routerLink]="'/Brands'">Brands</a>
-        </li>
-      </ul>
+  <!--  -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><i class="fas fa-car">Ford</i></a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a
+              class="nav-link text-light fs-5 px-3 py-2 rounded-pill transition-all hover-shadow"
+              [routerLink]="'vehicles'"
+              >Vehicles</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link text-light fs-5 px-3 py-2 rounded-pill transition-all hover-shadow"
+              [routerLink]="'/Brands'"
+              >Brands</a
+            >
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
- <!--  -->
- 
+  </nav>
+  <!--  -->
+
   <main class="flex-grow-1">
     <router-outlet></router-outlet>
   </main>
 
- 
-
-
-  <footer class="bg-dark text-light py-3 mt-0  ">
+  <footer class="bg-dark text-light py-3 mt-0">
     <div class="container">
       <div class="row">
-        
         <div class="col-md-4 mb-3">
           <h5 class="fw-bold">Cars Company</h5>
           <p>© 2024 Cars Company. Todos los derechos reservados.</p>
           <p>Dirección: Calle Ficticia 123, Ciudad, País</p>
         </div>
-        
+
         <div class="col-md-4 mb-3">
           <h5 class="fw-bold">Enlaces útiles</h5>
           <ul class="list-unstyled">
-            <li><a href="#" class="text-light text-decoration-none">Política de privacidad</a></li>
-            <li><a href="#" class="text-light text-decoration-none">Términos de servicio</a></li>
-            <li><a href="#" class="text-light text-decoration-none">Soporte</a></li>
+            <li>
+              <a href="#" class="text-light text-decoration-none"
+                >Política de privacidad</a
+              >
+            </li>
+            <li>
+              <a href="#" class="text-light text-decoration-none"
+                >Términos de servicio</a
+              >
+            </li>
+            <li>
+              <a href="#" class="text-light text-decoration-none">Soporte</a>
+            </li>
           </ul>
         </div>
         <div class="col-md-4 mb-3">

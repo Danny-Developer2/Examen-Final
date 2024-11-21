@@ -1,105 +1,155 @@
-<div *ngIf="showAlertSucces" class="toast-container position-fixed bottom-2 end-0 p-3">
-  <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">
-        Vehículo Actualizado con éxito.
-      </div>
-      <button type="button" class="btn-close btn-close-black ms-auto p-3" (click)="showAlertError = false" aria-label="Close"></button>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="showAlertError" class="toast-container position-fixed bottom-2 end-0 p-3">
-  <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">
-        Error al Actualizar el veículo.
-      </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="showAlertImagenes" class="toast-container position-fixed bottom-2 end-0 p-3">
-  <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">
-        No es posible agregar más de 5 fotos.
-      </div>
-    </div>
-  </div>
-</div>
 <!--  -->
-
-<div class="container bg-light p-4 rounded shadow-lg position-fixed"
-     style="top: 100px; left: 50%; transform: translateX(-50%); max-height: 50vh; display: flex; margin-top: 80px;">
-
+<div
+  class="container bg-light p-4 rounded shadow-lg position-fixed"
+  style="
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 50vh;
+    display: flex;
+    margin-top: 80px;
+  "
+>
   <!-- Imagen del vehículo -->
   <div class="col-md-6 col-lg-6 text-center mb-2">
-    <img src="https://images.carexpert.com.au/resize/3000/-/app/uploads/2022/10/06-DSC07000.jpg" 
-         alt="Imagen del vehículo" class="img-fluid rounded" style="max-height: 100%; object-fit: contain;">
+    <img
+      src="https://images.carexpert.com.au/resize/3000/-/app/uploads/2022/10/06-DSC07000.jpg"
+      alt="Imagen del vehículo"
+      class="img-fluid rounded"
+      style="max-height: 100%; object-fit: contain"
+    />
   </div>
 
   <!-- Formulario desplazable -->
-  <div class="col-md-6 col-lg-6 p-1" style="overflow-y: auto; max-height: 100%;">
+  <div class="col-md-6 col-lg-6 p-1" style="overflow-y: auto; max-height: 100%">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-group mb-3">
         <label for="brand" class="form-label">Marca</label>
-        <select id="brand" formControlName="brand" class="form-select form-select-sm">
+        <select
+          id="brand"
+          formControlName="brand"
+          class="form-select form-select-sm"
+        >
           <option disabled value="null">Seleccione una marca</option>
-          <option *ngFor="let brand of brandOptions" [ngValue]="brand">
+          @for(brand of brandOptions; track brand.id ){
+
+          <option [ngValue]="brand">
             {{ brand.name }}
           </option>
+          }
         </select>
       </div>
 
       <div class="form-group mb-3">
         <label for="model" class="form-label">Modelo</label>
-        <input class="form-control form-control-sm" type="text" id="model" formControlName="model" placeholder="Ingrese el modelo">
-        <div *ngIf="form.get('model')?.touched && form.get('model')?.invalid" style="color: red;">
-          <span *ngIf="form.get('model')?.hasError('required')">Este campo es requerido</span>
+        <input
+          class="form-control form-control-sm"
+          type="text"
+          id="model"
+          formControlName="model"
+          placeholder="Ingrese el modelo"
+        />
+        @if(form.get('model')?.touched && form.get('model')?.invalid){
+
+        <div style="color: red">
+          @if(form.get('model')?.hasError('required')){
+
+          <span>Este campo es requerido</span>
+          }
         </div>
+        }
       </div>
 
       <div class="form-group mb-3">
         <label for="year" class="form-label">Año</label>
-        <input type="number" id="year" formControlName="year" placeholder="Ingrese el año" class="form-control form-control-sm">
-        <div *ngIf="form.get('year')?.touched && form.get('year')?.invalid" style="color: red;">
-          <span *ngIf="form.get('year')?.hasError('required')">Este campo es requerido</span>
+        <input
+          type="number"
+          id="year"
+          formControlName="year"
+          placeholder="Ingrese el año"
+          class="form-control form-control-sm"
+        />
+        @if(form.get('year')?.touched && form.get('year')?.invalid){
+
+        <div style="color: red">
+          @if(form.get('year')?.hasError('required')){
+
+          <span>Este campo es requerido</span>
+          }
         </div>
+        }
       </div>
 
       <div class="form-group mb-3">
         <label for="color" class="form-label">Color</label>
-        <input type="text" id="color" formControlName="color" placeholder="Ingrese el color" class="form-control form-control-sm">
-        <div *ngIf="form.get('color')?.touched && form.get('color')?.invalid" style="color: red;">
-          <span *ngIf="form.get('color')?.hasError('required')">Este campo es requerido</span>
+        <input
+          type="text"
+          id="color"
+          formControlName="color"
+          placeholder="Ingrese el color"
+          class="form-control form-control-sm"
+        />
+        @if(form.get('color')?.touched && form.get('color')?.invalid){
+
+        <div style="color: red">
+          @if(form.get('color')?.hasError('required')){
+
+          <span>Este campo es requerido</span>
+          }
         </div>
+        }
       </div>
 
       <!-- Fotos -->
       <div formArrayName="photos">
-        <div *ngFor="let photo of form.controls.photos.controls; let i = index" [formGroupName]="i" class="form-group mb-3">
-          <label for="url-{{ i }}" class="form-label"></label>
+        @for(photo of form.controls.photos.controls; track $index){
+
+        <div [formGroupName]="$index" class="form-group mb-3">
+          <label for="url-{{ $index }}" class="form-label"></label>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon3">URL Foto</span>
-            <input type="text" id="url-{{ i }}" formControlName="url" placeholder="Ingrese la URL de la foto" class="form-control form-control-sm">
+            <input
+              type="text"
+              id="url-{{ $index }}"
+              formControlName="url"
+              placeholder="Ingrese la URL de la foto"
+              class="form-control form-control-sm"
+            />
           </div>
-          <button type="button" (click)="deletePhoto(i)" class="btn btn-danger mt-2">Eliminar Foto</button>
+          <button
+            type="button"
+            (click)="deletePhoto($index)"
+            class="btn btn-danger mt-2"
+          >
+            Eliminar Foto
+          </button>
         </div>
+        } @if(form.get('photos')?.invalid && form.get('photos')?.touched ||
+        form.value.photos?.length === 0){
 
-        <div *ngIf="form.get('photos')?.invalid && form.get('photos')?.touched || form.value.photos?.length === 0"  class="alert alert-warning" role="alert">
+        <div class="alert alert-warning" role="alert">
           Debes agregar al menos una foto.
         </div>
+        }
       </div>
 
-      <button type="button" (click)="addPhoto()" class="btn btn-primary mb-3">Agregar Foto</button>
+      <button type="button" (click)="addPhoto()" class="btn btn-primary mb-3">
+        Agregar Foto
+      </button>
 
       <div class="form-group">
-        <button type="button" (click)="onCancel()" class="btn btn-danger w-100">Cancelar</button>
+        <button type="button" (click)="onCancel()" class="btn btn-danger w-100">
+          Cancelar
+        </button>
         <br /><br />
-        <button type="submit" class="btn btn-success w-100" [disabled]="form.invalid">Guardar Vehículo</button>
+        <button
+          type="submit"
+          class="btn btn-success w-100"
+          [disabled]="form.invalid"
+        >
+          Guardar Vehículo
+        </button>
       </div>
     </form>
   </div>
 </div>
-

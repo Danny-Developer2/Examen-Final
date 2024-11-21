@@ -20,6 +20,7 @@ import { BadRequest } from '@_models/badRequest';
 import { VehiclesService } from '@services/vehicles.service';
 import { Vehicle } from '@_models/vehicle';
 import { BrandsService } from '@services/brands.service';
+import { ToastrService } from 'ngx-toastr';
 
 type PhotoType = {
   url: FormControl<string | null>;
@@ -48,14 +49,11 @@ export class VehicleUpdateComponent {
   url: string | null = null;
   private brandsService = inject(BrandsService);
   service = inject(VehiclesService);
-  showAlert: boolean = false;
-  showAlertSucces: boolean = false;
   vehicleId: number | null = null;
   vehicles: Vehicle[] = [];
-  showAlertError: boolean = false;
   route = inject(ActivatedRoute);
   brandOptions: SelectOption[] = [];
-  showAlertImagenes:boolean = false
+  private toastr = inject(ToastrService);
   form: FormGroup<FormType> = new FormGroup<FormType>({
     brand: new FormControl<SelectOption | null>(null),
     model: new FormControl<string | null>(null),
@@ -63,8 +61,6 @@ export class VehicleUpdateComponent {
     color: new FormControl<string | null>(null),
     photos: new FormArray<FormGroup<PhotoType>>([]),
   });
-
-  submitted = signal<boolean>(false);
 
   constructor(private cdr: ChangeDetectorRef) {
     this.vehicleId = this.route.snapshot.paramMap.get('id')
@@ -101,10 +97,7 @@ export class VehicleUpdateComponent {
           this.cdr.detectChanges();
         },
         error: () => {
-          console.error(
-            'Error al cargar los datos del vehículo.',
-            'danger'
-          );
+          console.error('Error al cargar los datos del vehículo.', 'danger');
         },
       });
     }
@@ -112,14 +105,12 @@ export class VehicleUpdateComponent {
 
   deletePhoto(index: number) {
     this.form.controls.photos.removeAt(index);
+    this.toastr.success(`url de imagen eliminada.`);
   }
 
   addPhoto() {
     if (this.form.controls.photos.length >= 5) {
-      this.showAlertImagenes = true;
-      setTimeout(() => {
-        this.showAlertImagenes = false;
-      }, 4000);
+      this.toastr.error(`No se pueden agregar más de cinco fotos.`);
     } else {
       const photoFormGroup = new FormGroup<PhotoType>({
         url: new FormControl<string | null>(null),
@@ -176,27 +167,15 @@ export class VehicleUpdateComponent {
     });
   }
 
-
-
-
   onSubmit() {
-    
-    this.service.updateVehicle(this.vehicleId,this.form.value).subscribe({
+    this.service.updateVehicle(this.vehicleId, this.form.value).subscribe({
       next: (response: Vehicle) => {
-        this.showAlertSucces = true;
-        setTimeout(() => {
-          this.showAlertSucces = false;
-          this.router.navigate(['/vehicles']);
-        }, 4000);
+        this.toastr.success(`Los Datos se actualizaron con éxito.`);
+        this.router.navigate(['/vehicles']);
       },
-      error: (error: BadRequest) => {
-        this.error.set(error);
-        this.showAlertError = true;
-      },
+      error: (error) => this.toastr.error(error.error),
     });
-   
   }
- 
 
   optionChanged(event: HTMLSelectElement) {
     const value: SelectOption = JSON.parse(event.value);

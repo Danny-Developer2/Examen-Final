@@ -1,53 +1,59 @@
-<div *ngIf="paginatedResult()?.items; else noVehicles">
+@if(paginatedResult()?.items){
+<div>
   <div class="container" style="margin-top: 150px">
     <div
       class="table-container d-flex flex-column"
       style="max-height: 500px; overflow-y: auto"
     >
-    <div class="container col-12 d-flex">
-      <div class="row w-left ">
-        <div class="col-12 col-md-6">
-          <div class="form-group mb-3">
-            <label for="modelSearch" class="form-label">Buscar por Modelo</label>
-            <input
-              id="modelSearch"
-              class="form-control"
-              type="text"
-              [(ngModel)]="term"
-              placeholder="Buscar por Modelo..."
-              (ngModelChange)="applyFilters()"
-            />
+      <div class="container col-12 d-flex">
+        <div class="row w-left">
+          <div class="col-12 col-md-6">
+            <div class="form-group mb-3">
+              <label for="modelSearch" class="form-label"
+                >Buscar por Modelo</label
+              >
+              <input
+                id="modelSearch"
+                class="form-control"
+                type="text"
+                [(ngModel)]="term"
+                placeholder="Buscar por Modelo..."
+                (ngModelChange)="applyFilters()"
+              />
+            </div>
           </div>
-        </div>
-    
-        <div class="col-12 col-md-6">
-          <div class="form-group mb-3">
-            <label for="yearSearch" class="form-label">Buscar por Año</label>
-            <input
-              id="yearSearch"
-              class="form-control"
-              type="text"
-              [(ngModel)]="year"
-              placeholder="Buscar por año..."
-              (ngModelChange)="applyFilters()"
-            />
-          </div>
-        </div>
-      </div>
 
-      
-    
-      
-      <div class="d-flex align-items-center">
-        <a class="btn btn-outline-secondary px-2 ms-4 border-radius:10px" (click)="resetFilters()">
-          <fa-icon [icon]="faBroom"></fa-icon> Resetear filtros
-        </a>
+          <div class="col-12 col-md-6">
+            <div class="form-group mb-3">
+              <label for="yearSearch" class="form-label">Buscar por Año</label>
+              <input
+                id="yearSearch"
+                class="form-control"
+                type="text"
+                [(ngModel)]="year"
+                placeholder="Buscar por año..."
+                (ngModelChange)="applyFilters()"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <a
+            class="btn btn-outline-secondary px-2 ms-4 border-radius:10px"
+            (click)="resetFilters()"
+          >
+            <fa-icon [icon]="faBroom"></fa-icon> Resetear filtros
+          </a>
+          <button class="btn btn-primary ms-3">
+            <a
+              class="text-black fs-8 px-4 rounded-pill transition-all hover-shadow"
+              [routerLink]="'/vehicle/create'"
+              >Create</a
+            >
+          </button>
+        </div>
       </div>
-    </div>
-    
-      
-       
-    
 
       <div class="table-responsive flex-grow-1">
         <table class="table table-success table-striped">
@@ -62,6 +68,8 @@
             </tr>
           </thead>
           <tbody>
+            <!-- Problemas para usar el @for devido a los filtros de pipe investigar solucion de conflictos -->
+            <!-- @for(vehicle of paginatedResult()?.items!; track $index;   pipeFilters : year : term){} -->
             <tr
               *ngFor="
                 let vehicle of paginatedResult()?.items!
@@ -69,95 +77,111 @@
               "
             >
               <td>
-                <a
-                  *ngIf="vehicle?.id !== null && vehicle?.id !== undefined"
-                  (click)="navigateToVehicle(vehicle.id)"
-                >
+                @if(vehicle.id !== null && vehicle.id !== undefined){
+                <a (click)="navigateToVehicle(vehicle.id)">
                   {{ vehicle.id }}
                 </a>
-                <span *ngIf="vehicle?.id === null || vehicle?.id === undefined"
-                  >ID no disponible</span
-                >
+                } @if(vehicle.id === null || vehicle.id === undefined){
+                <span>ID no disponible</span>
+                }
               </td>
               <td>
-                <a
-                  *ngIf="vehicle?.id !== null && vehicle?.id !== undefined"
-                  (click)="navigateToVehicle(vehicle.id)"
-                >
+                @if(vehicle.id !== null && vehicle.id !== undefined ) {
+
+                <a (click)="navigateToVehicle(vehicle.id)">
                   {{ vehicle.model }}
                 </a>
-                <span *ngIf="vehicle?.id === null || vehicle?.id === undefined"
-                  >Modelo no disponible</span
-                >
+                } @if(vehicle.id === null || vehicle.id === undefined){
+
+                <span>Modelo no disponible</span>
+                }
               </td>
               <td>
-                <a
-                  *ngIf="vehicle?.id !== null && vehicle?.id !== undefined"
-                  (click)="navigateToVehicle(vehicle.id)"
-                >
+                @if(vehicle.id !== null && vehicle.id !== undefined){
+
+                <a (click)="navigateToVehicle(vehicle.id)">
                   {{ vehicle.year }}
                 </a>
-                <span *ngIf="vehicle?.id === null || vehicle?.id === undefined"
-                  >Año no disponible</span
-                >
+                } @if(vehicle.id === null || vehicle === undefined){
+
+                <span>Año no disponible</span>
+                }
               </td>
               <td>
-                <a
-                  *ngIf="vehicle?.id !== null && vehicle?.id !== undefined"
-                  (click)="navigateToVehicle(vehicle.id)"
-                >
+                @if(vehicle.id !== null && vehicle.id !== undefined){
+
+                <a (click)="navigateToVehicle(vehicle.id)">
                   {{ vehicle.color }}
                 </a>
-                <span *ngIf="vehicle?.id === null || vehicle?.id === undefined"
-                  >Color no disponible</span
-                >
+                } @if( vehicle.id === null || vehicle.id === undefined){
+
+                <span>Color no disponible</span>
+                }
               </td>
               <td>
-                <a
-                  *ngIf="vehicle?.id !== null && vehicle?.id !== undefined"
-                  (click)="navigateToVehicle(vehicle.id)"
-                >
+                @if( vehicle.id !== null && vehicle.id !== undefined ){
+
+                <a (click)="navigateToVehicle(vehicle.id)">
                   {{
                     vehicle.brand
                       ? vehicle.brand.name || vehicle.brand
                       : "No disponible"
                   }}
                 </a>
-                <span *ngIf="vehicle?.id === null || vehicle?.id === undefined"
-                  >Marca no disponible</span
-                >
+                } @if(vehicle.id === null || vehicle.id === undefined){
+
+                <span>Marca no disponible</span>
+                }
               </td>
               <td>
                 <div class="d-flex justify-content-start flex-wrap">
                   @if(vehicle?.id !== null && vehicle?.id !== undefined) {
-                    <a 
-                    (click)="navigateToVehicle(vehicle.id)">
-                   <img [src]="vehicle.photos.length > 0 ? vehicle.photos[0].url : 'img/placeholder.png'" 
-                        alt="Foto principal del vehículo" 
-                        class="img-fluid img-thumbnail me-2 mb-2" 
-                        style="object-fit: cover; border-radius: 10px; max-width: 100px; max-height: 100px;">
-                 </a>  
-                   }
-
-                  @if(vehicle.photos.length > 1) {
-                    <div class="ms-3 align-self-center">
-                      <a [routerLink]="['vehicle', vehicle.id]" (click)="showMorePhotos = !showMorePhotos">
-                        Ver más
-                      </a>
+                  <a (click)="navigateToVehicle(vehicle.id)">
+                    <img
+                      [src]="
+                        vehicle.photos.length > 0
+                          ? vehicle.photos[0].url
+                          : 'img/placeholder.png'
+                      "
+                      alt="Foto principal del vehículo"
+                      class="img-fluid img-thumbnail me-2 mb-2"
+                      style="
+                        object-fit: cover;
+                        border-radius: 10px;
+                        max-width: 100px;
+                        max-height: 100px;
+                      "
+                    />
+                  </a>
+                  } @if(vehicle.photos.length > 1) {
+                  <div class="ms-3 align-self-center">
+                    <a
+                      [routerLink]="['/vehicle', vehicle.id]"
+                      (click)="showMorePhotos = !showMorePhotos"
+                    >
+                      Ver más
+                    </a>
+                  </div>
+                  } @if(showMorePhotos) {
+                  <div class="d-flex justify-content-start flex-wrap mt-2">
+                    @for(photo of vehicle.photos.slice(1); let idx = $index;
+                    track idx) {
+                    <div class="me-2 mb-2">
+                      <img
+                        [src]="photo.url"
+                        alt="Foto adicional del vehículo"
+                        class="img-fluid img-thumbnail"
+                        style="
+                          object-fit: cover;
+                          border-radius: 10px;
+                          max-width: 80px;
+                          max-height: 80px;
+                        "
+                      />
                     </div>
+                    }
+                  </div>
                   }
-                  @if(showMorePhotos) {
-                    <div class="d-flex justify-content-start flex-wrap mt-2">
-                      @for(photo of vehicle.photos.slice(1); let idx = $index; track idx) {
-                        <div class="me-2 mb-2">
-                          <img [src]="photo.url" 
-                               alt="Foto adicional del vehículo" 
-                               class="img-fluid img-thumbnail" 
-                               style="object-fit: cover; border-radius: 10px; max-width: 80px; max-height: 80px;">
-                        </div>
-                      }
-                    </div> 
-                   }
                 </div>
               </td>
             </tr>
@@ -204,7 +228,8 @@
     </div>
   </div>
 </div>
+}@else{
 
-<ng-template #noVehicles>
-  <p class="text-center text-black">¡No se encontraron vehículos!</p>
-</ng-template>
+<p class="text-center text-black">¡No se encontraron vehículos!</p>
+
+}

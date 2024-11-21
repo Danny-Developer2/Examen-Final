@@ -14,6 +14,7 @@ import { BadRequest } from '@_models/badRequest';
 import { BrandsService } from '@services/brands.service';
 import { VehiclesService } from '@services/vehicles.service';
 import { Vehicle } from '@_models/vehicle';
+import { ToastrService } from 'ngx-toastr';
 
 type PhotoType = {
   url: FormControl<string | null>;
@@ -46,12 +47,10 @@ export class VehicleCreateComponent {
   url: string | null = null;
   private brandsService = inject(BrandsService);
   service = inject(VehiclesService);
-  showAlertImagenes: boolean = false;
   vehicleId: number | null = null;
-  showAlertSucces: boolean = false;
-  showAlertError: boolean = false;
   route = inject(ActivatedRoute);
   errorMessage: string | undefined;
+  private toastr = inject(ToastrService)
 
   brandOptions: SelectOption[] = [];
 
@@ -107,16 +106,15 @@ export class VehicleCreateComponent {
   }
 
   deletePhoto(index: number) {
+    this.toastr.success(`url de imagen eliminada.`);
     this.form.controls.photos.removeAt(index);
   }
 
   addPhoto() {
     if (this.form.controls.photos.length >= 5) {
-      this.showAlertImagenes = true;
+      this.toastr.error(`No se pueden agregar más de cinco fotos.`);
 
-      setTimeout(() => {
-        this.showAlertImagenes = false;
-      }, 4000);
+  
     } else {
       const photoFormGroup = new FormGroup({
         url: new FormControl<string | null>(null),
@@ -134,23 +132,17 @@ export class VehicleCreateComponent {
     this.url = url;
   }
 
-  ngOnInit() {}
-
+ 
   onSubmit() {
     
     this.service.createVehicle(this.form.value).subscribe({
       next: (response: Vehicle) => {
-        this.showAlertSucces = true;
-        setTimeout(() => {
-          this.showAlertSucces = false;
+        this.toastr.success(`El auto con ID ${response.id} se guardó con éxito.`);
           this.router.navigate(['/vehicles']);
-        }, 4000);
       },
-      error: (error: BadRequest) => {
-        this.error.set(error);
-        this.showAlertError = true;
-      },
-    });
+      error: error => this.toastr.error(error.error)
+    
+    })
    
   }
 

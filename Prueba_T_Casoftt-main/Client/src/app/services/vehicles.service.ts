@@ -164,7 +164,6 @@ export class VehiclesService {
     return this.http.get<any>(url);
   }
 }
-function handleError(error: any) {
-  throw new Error('Function not implemented.');
-}
+
+
 

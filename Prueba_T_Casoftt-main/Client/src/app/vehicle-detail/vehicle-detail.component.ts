@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { VehiclesService } from '@services/vehicles.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -14,8 +15,8 @@ import { VehiclesService } from '@services/vehicles.service';
 export class VehicleDetailComponent implements OnInit {
 
   private service = inject(VehiclesService);
-  private router: Router = new Router();
-  showAlert: boolean = false; 
+  private router: Router = new Router(); 
+  private toastr = inject(ToastrService)
 
   
 
@@ -41,13 +42,9 @@ export class VehicleDetailComponent implements OnInit {
   
   deleteActionVehicle(vehicleId: number | null | undefined){ 
     this.service.deleteVehicle(vehicleId)
-    this.showAlert = true;
-
+    this.toastr.success(`Vehículo eliminado con éxito`);
+    this.router.navigate(['vehicles']);
     
-    setTimeout(() => {
-      this.showAlert = false;
-      this.router.navigate(['vehicles']);
-    }, 4000);
   }
   actuaizarDatosVehicle(vehicleId: number | null | undefined){
     this.service.navigateToVehicleUpdate(vehicleId);
@@ -63,15 +60,6 @@ export class VehicleDetailComponent implements OnInit {
     }
   }
   
-    
-
-    
-
-  
-  closeAlert(): void {
-    this.showAlert = false;
-    this.router.navigate(['vehicles']);
-  }
 
   
 
