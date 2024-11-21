@@ -74,9 +74,10 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     const term = this.term;
     // const term = this.term.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    if (term !== this.service.params().term) {
+    if ((term?.toLocaleLowerCase() || '') !== (this.service.params().term?.toLocaleLowerCase() || '')) {
       this.service.params().term = term;
     }
+    
 
     if (this.year !== this.service.params().year) {
       this.service.params().year = this.year ?? 0;

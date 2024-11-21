@@ -48,41 +48,43 @@ public class VehicleRepository(DataContext context, IMapper mapper) : IVehicleRe
             .ToListAsync()
         ;
 
-    public async Task<PagedList<VehicleDto>> GetPagedListAsync(VehicleParams param)
+  public async Task<PagedList<VehicleDto>> GetPagedListAsync(VehicleParams param)
+{
+    IQueryable<Vehicle>? query = context.Vehicles
+        .Include(v => v.VehicleBrand.Brand)
+        .Include(x => x.VehiclePhotos).ThenInclude(x => x.Photo)
+        .AsNoTracking()
+        .AsQueryable();
+
+    if (!string.IsNullOrEmpty(param.Term))
     {
-        IQueryable<Vehicle>? query = context.Vehicles
-            .Include(v => v.VehicleBrand.Brand)
-            .Include(x => x.VehiclePhotos).ThenInclude(x => x.Photo)
-            .AsNoTracking()
-            .AsQueryable()
-        ;
+        string termLower = param.Term.ToLower();
 
-        if(!string.IsNullOrEmpty(param.Term))
-        {   
-            query = query.Where(x => 
-                !string.IsNullOrEmpty(x.Model) && x.Model.Contains(param.Term)
-                ||
-                x.Year.HasValue && x.Year.ToString() == param.Term
-                ||
-                x.VehicleBrand != null &&
-                x.VehicleBrand.Brand != null &&
-                !string.IsNullOrEmpty(x.VehicleBrand.Brand.Name) &&
-                x.VehicleBrand.Brand.Name.Contains(param.Term)
-                ||
-                !string.IsNullOrEmpty(x.Model) && x.Model == param.Term
-            );
-        }
-
-        if(param.Year.HasValue && param.Year.Value > 0) {
-            query = query.Where(v => v.Year == param.Year.Value);
-        } 
-
-        PagedList<VehicleDto> pagedList = await PagedList<VehicleDto>.CreateAsync(
-            query.ProjectTo<VehicleDto>(mapper.ConfigurationProvider), param.PageNumber, param.PageSize)
-        ;
-
-        return pagedList;
+        query = query.Where(x =>
+            (!string.IsNullOrEmpty(x.Model) && x.Model.ToLower().Contains(termLower))
+            ||
+            (x.Year.HasValue && x.Year.ToString().ToLower() == termLower)
+            ||
+            (x.VehicleBrand != null &&
+             x.VehicleBrand.Brand != null &&
+             !string.IsNullOrEmpty(x.VehicleBrand.Brand.Name) &&
+             x.VehicleBrand.Brand.Name.ToLower().Contains(termLower))
+            ||
+            (!string.IsNullOrEmpty(x.Model) && x.Model.ToLower() == termLower)
+        );
     }
 
+    if (param.Year.HasValue && param.Year.Value > 0)
+    {
+        query = query.Where(v => v.Year == param.Year.Value);
+    }
+
+    PagedList<VehicleDto> pagedList = await PagedList<VehicleDto>.CreateAsync(
+        query.ProjectTo<VehicleDto>(mapper.ConfigurationProvider), 
+        param.PageNumber, 
+        param.PageSize);
+
+    return pagedList;
+}
 
 }
