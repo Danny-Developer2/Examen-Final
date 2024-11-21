@@ -4,7 +4,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-root',

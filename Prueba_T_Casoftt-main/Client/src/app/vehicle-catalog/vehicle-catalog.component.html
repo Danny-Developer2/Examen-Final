@@ -1,92 +1,152 @@
 <div *ngIf="paginatedResult()?.items; else noVehicles">
-    <div class="container"style="margin-top: 150px;">
-      <!-- Contenedor para la tabla y la paginación con altura limitada -->
-      <div class="table-container d-flex flex-column" style="max-height: 500px; overflow-y: auto;">
-
-        <div class="container d-flex justify-content-left align-items-center" style="height: 100%;">
-          <div class="row w-left">
-            <div class="col-12">
-              <div class="mb-3 d-flex justify-content-center">
-                <input type="text" placeholder="Buscar por Modelo" class="form-control me-2" id="filter-term" aria-describedby="search" [(ngModel)]="term" (ngModelChange)="onSearchChange()">
-                <input type="number" placeholder="Año..." class="form-control me-2" id="filter-term" aria-describedby="search" [(ngModel)]="year" (ngModelChange)="onSearchChange()">
-                <a class="btn btn-outline-primary px-3 me-2" (click)="applyFilters()"><fa-icon [icon]="faSearch"></fa-icon></a>
-                <a class="btn btn-outline-secondary px-3" (click)="resetFilters()"><fa-icon [icon]="faBroom"></fa-icon>
-                </a>
-              </div>
-            </div>
+  <div class="container" style="margin-top: 150px">
+    <div
+      class="table-container d-flex flex-column"
+      style="max-height: 500px; overflow-y: auto"
+    >
+    <div class="container col-12 d-flex">
+      <div class="row w-left ">
+        <div class="col-12 col-md-6">
+          <div class="form-group mb-3">
+            <label for="modelSearch" class="form-label">Buscar por Modelo</label>
+            <input
+              id="modelSearch"
+              class="form-control"
+              type="text"
+              [(ngModel)]="term"
+              placeholder="Buscar por Modelo..."
+              (ngModelChange)="applyFilters()"
+            />
           </div>
         </div>
-        
-        <div class="table-responsive flex-grow-1">
-          <table class="table table-success table-striped">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Modelo</th>
-                <th scope="col">Año</th>
-                <th scope="col">Color</th>
-                <th scope="col">Marca</th>
-                <th scope="col">Fotos</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let vehicle of paginatedResult()?.items">
-                <td>
-                  <a *ngIf="vehicle?.id !== null && vehicle?.id !== undefined" 
-                     (click)="navigateToVehicle(vehicle.id)">
-                    {{ vehicle.id }}
-                  </a>
-                  <span *ngIf="vehicle?.id === null || vehicle?.id === undefined">ID no disponible</span>
-                </td>
-                <td>
-                  <a *ngIf="vehicle?.id !== null && vehicle?.id !== undefined" 
-                     (click)="navigateToVehicle(vehicle.id)">
-                    {{ vehicle.model }}
-                  </a>
-                  <span *ngIf="vehicle?.id === null || vehicle?.id === undefined">Modelo no disponible</span>
-                </td>
-                <td>
-                  <a *ngIf="vehicle?.id !== null && vehicle?.id !== undefined" 
-                     (click)="navigateToVehicle(vehicle.id)">
-                    {{ vehicle.year }}
-                  </a>
-                  <span *ngIf="vehicle?.id === null || vehicle?.id === undefined">Año no disponible</span>
-                </td>
-                <td>
-                  <a *ngIf="vehicle?.id !== null && vehicle?.id !== undefined" 
-                     (click)="navigateToVehicle(vehicle.id)">
-                    {{ vehicle.color }}
-                  </a>
-                  <span *ngIf="vehicle?.id === null || vehicle?.id === undefined">Color no disponible</span>
-                </td>
-                <td>
-                  <a *ngIf="vehicle?.id !== null && vehicle?.id !== undefined" 
-                     (click)="navigateToVehicle(vehicle.id)">
-                    {{ vehicle.brand ? vehicle.brand.name || vehicle.brand : 'No disponible' }}
-                  </a>
-                  <span *ngIf="vehicle?.id === null || vehicle?.id === undefined">Marca no disponible</span>
-                </td>
-                <td>
-                    <div class="d-flex justify-content-start flex-wrap">
-                       @if(vehicle?.id !== null && vehicle?.id !== undefined) {
-                        <a 
-                        (click)="navigateToVehicle(vehicle.id)">
-                       <img [src]="vehicle.photos.length > 0 ? vehicle.photos[0].url : 'img/placeholder.png'" 
-                            alt="Foto principal del vehículo" 
-                            class="img-fluid img-thumbnail me-2 mb-2" 
-                            style="object-fit: cover; border-radius: 10px; max-width: 100px; max-height: 100px;">
-                     </a>  
-                       }
-                      
-                     @if(vehicle.photos.length > 1) {
-                       <div class="ms-3 align-self-center">
-                         <a [routerLink]="['vehicle', vehicle.id]" (click)="showMorePhotos = !showMorePhotos">
-                           Ver más
-                         </a>
-                       </div>
-                     }
-                   </div>
-                   @if(showMorePhotos) {
+    
+        <div class="col-12 col-md-6">
+          <div class="form-group mb-3">
+            <label for="yearSearch" class="form-label">Buscar por Año</label>
+            <input
+              id="yearSearch"
+              class="form-control"
+              type="text"
+              [(ngModel)]="year"
+              placeholder="Buscar por año..."
+              (ngModelChange)="applyFilters()"
+            />
+          </div>
+        </div>
+      </div>
+
+      
+    
+      
+      <div class="d-flex align-items-center">
+        <a class="btn btn-outline-secondary px-2 ms-4 border-radius:10px" (click)="resetFilters()">
+          <fa-icon [icon]="faBroom"></fa-icon> Resetear filtros
+        </a>
+      </div>
+    </div>
+    
+      
+       
+    
+
+      <div class="table-responsive flex-grow-1">
+        <table class="table table-success table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Modelo</th>
+              <th scope="col">Año</th>
+              <th scope="col">Color</th>
+              <th scope="col">Marca</th>
+              <th scope="col">Fotos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let vehicle of paginatedResult()?.items!
+                  | pipeFilters : year : term
+              "
+            >
+              <td>
+                <a
+                  *ngIf="vehicle?.id !== null && vehicle?.id !== undefined"
+                  (click)="navigateToVehicle(vehicle.id)"
+                >
+                  {{ vehicle.id }}
+                </a>
+                <span *ngIf="vehicle?.id === null || vehicle?.id === undefined"
+                  >ID no disponible</span
+                >
+              </td>
+              <td>
+                <a
+                  *ngIf="vehicle?.id !== null && vehicle?.id !== undefined"
+                  (click)="navigateToVehicle(vehicle.id)"
+                >
+                  {{ vehicle.model }}
+                </a>
+                <span *ngIf="vehicle?.id === null || vehicle?.id === undefined"
+                  >Modelo no disponible</span
+                >
+              </td>
+              <td>
+                <a
+                  *ngIf="vehicle?.id !== null && vehicle?.id !== undefined"
+                  (click)="navigateToVehicle(vehicle.id)"
+                >
+                  {{ vehicle.year }}
+                </a>
+                <span *ngIf="vehicle?.id === null || vehicle?.id === undefined"
+                  >Año no disponible</span
+                >
+              </td>
+              <td>
+                <a
+                  *ngIf="vehicle?.id !== null && vehicle?.id !== undefined"
+                  (click)="navigateToVehicle(vehicle.id)"
+                >
+                  {{ vehicle.color }}
+                </a>
+                <span *ngIf="vehicle?.id === null || vehicle?.id === undefined"
+                  >Color no disponible</span
+                >
+              </td>
+              <td>
+                <a
+                  *ngIf="vehicle?.id !== null && vehicle?.id !== undefined"
+                  (click)="navigateToVehicle(vehicle.id)"
+                >
+                  {{
+                    vehicle.brand
+                      ? vehicle.brand.name || vehicle.brand
+                      : "No disponible"
+                  }}
+                </a>
+                <span *ngIf="vehicle?.id === null || vehicle?.id === undefined"
+                  >Marca no disponible</span
+                >
+              </td>
+              <td>
+                <div class="d-flex justify-content-start flex-wrap">
+                  @if(vehicle?.id !== null && vehicle?.id !== undefined) {
+                    <a 
+                    (click)="navigateToVehicle(vehicle.id)">
+                   <img [src]="vehicle.photos.length > 0 ? vehicle.photos[0].url : 'img/placeholder.png'" 
+                        alt="Foto principal del vehículo" 
+                        class="img-fluid img-thumbnail me-2 mb-2" 
+                        style="object-fit: cover; border-radius: 10px; max-width: 100px; max-height: 100px;">
+                 </a>  
+                   }
+
+                  @if(vehicle.photos.length > 1) {
+                    <div class="ms-3 align-self-center">
+                      <a [routerLink]="['vehicle', vehicle.id]" (click)="showMorePhotos = !showMorePhotos">
+                        Ver más
+                      </a>
+                    </div>
+                  }
+                  @if(showMorePhotos) {
                     <div class="d-flex justify-content-start flex-wrap mt-2">
                       @for(photo of vehicle.photos.slice(1); let idx = $index; track idx) {
                         <div class="me-2 mb-2">
@@ -98,35 +158,53 @@
                       }
                     </div> 
                    }
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-    
-        <!-- Paginación de la tabla -->
-        <div class="d-flex justify-content-center align-items-center mt-2">
-          <button class="btn btn-primary rounded-pill px-4 py-2" 
-                  (click)="pageChanged({ page: paginatedResult()?.pagination!.currentPage - 1 })" 
-                  [disabled]="paginatedResult()?.pagination?.currentPage === 1">
-            Anterior
-          </button>
-      
-          <span class="mx-3 text-black" style="font-size: 1.2rem; font-weight: bold;">
-            Página {{ paginatedResult()?.pagination?.currentPage }} de {{ paginatedResult()?.pagination?.totalPages }}
-          </span>
-      
-          <button class="btn btn-primary rounded-pill px-4 py-2" 
-                  (click)="pageChanged({ page: paginatedResult()?.pagination!.currentPage + 1 })" 
-                  [disabled]="paginatedResult()?.pagination?.currentPage === paginatedResult()?.pagination?.totalPages">
-            Siguiente
-          </button>
-        </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center mt-2">
+        <button
+          class="btn btn-primary rounded-pill px-4 py-2"
+          (click)="
+            pageChanged({
+              page: (paginatedResult()?.pagination)!.currentPage - 1
+            })
+          "
+          [disabled]="paginatedResult()?.pagination?.currentPage === 1"
+        >
+          Anterior
+        </button>
+
+        <span
+          class="mx-3 text-black"
+          style="font-size: 1.2rem; font-weight: bold"
+        >
+          Página {{ paginatedResult()?.pagination?.currentPage }} de
+          {{ paginatedResult()?.pagination?.totalPages }}
+        </span>
+
+        <button
+          class="btn btn-primary rounded-pill px-4 py-2"
+          (click)="
+            pageChanged({
+              page: (paginatedResult()?.pagination)!.currentPage + 1
+            })
+          "
+          [disabled]="
+            paginatedResult()?.pagination?.currentPage ===
+            paginatedResult()?.pagination?.totalPages
+          "
+        >
+          Siguiente
+        </button>
       </div>
     </div>
   </div>
-  
-  <ng-template #noVehicles>
-    <p class="text-center text-black">¡No se encontraron vehículos!</p>
-  </ng-template>
-  
+</div>
+
+<ng-template #noVehicles>
+  <p class="text-center text-black">¡No se encontraron vehículos!</p>
+</ng-template>

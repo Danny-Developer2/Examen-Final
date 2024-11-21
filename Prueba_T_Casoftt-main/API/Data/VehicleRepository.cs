@@ -50,36 +50,40 @@ public class VehicleRepository(DataContext context, IMapper mapper) : IVehicleRe
 
     public async Task<PagedList<VehicleDto>> GetPagedListAsync(VehicleParams param)
     {
-        IQueryable<Vehicle>? query = context.Vehicles
+        IQueryable<Vehicle> query = context.Vehicles
             .Include(v => v.VehicleBrand.Brand)
             .Include(x => x.VehiclePhotos).ThenInclude(x => x.Photo)
-            .AsNoTracking()
-            .AsQueryable()
-        ;
+            .AsNoTracking();
 
-        if(!string.IsNullOrEmpty(param.Term))
-        {   
-            query = query.Where(x => 
-                !string.IsNullOrEmpty(x.Model) && x.Model.Contains(param.Term)
-                ||
-                x.Year.HasValue && x.Year.ToString() == param.Term
-                ||
-                x.VehicleBrand != null &&
-                x.VehicleBrand.Brand != null &&
-                !string.IsNullOrEmpty(x.VehicleBrand.Brand.Name) &&
-                x.VehicleBrand.Brand.Name.Contains(param.Term)
-                ||
-                !string.IsNullOrEmpty(x.Model) && x.Model == param.Term
+        // Aplicar filtros según los parámetros
+        if (!string.IsNullOrEmpty(param.Term))
+        {
+            string termLower = param.Term.ToLower();
+            query = query.Where(x =>
+                (!string.IsNullOrEmpty(x.Model) && x.Model.ToLower().Contains(termLower)) ||
+                (x.Year.HasValue && x.Year.ToString() == param.Term) ||
+                (x.VehicleBrand.Brand != null && x.VehicleBrand.Brand.Name!.ToLower().Contains(termLower))
             );
         }
 
-        if(param.Year.HasValue && param.Year.Value > 0) {
-            query = query.Where(v => v.Year == param.Year.Value);
-        } 
+        if (param.Year.HasValue && param.Year > 0)
+        {
+            query = query.Where(x => x.Year == param.Year);
+        }
 
-        PagedList<VehicleDto> pagedList = await PagedList<VehicleDto>.CreateAsync(
-            query.ProjectTo<VehicleDto>(mapper.ConfigurationProvider), param.PageNumber, param.PageSize)
-        ;
+    
+        var filteredQuery = query.ToList(); 
+        foreach (var item in filteredQuery)
+        {
+            Console.WriteLine($"Model: {item.Model}, Year: {item.Year}"); 
+        }
+
+        
+        var pagedList = await PagedList<VehicleDto>.CreateAsync(
+            query.ProjectTo<VehicleDto>(mapper.ConfigurationProvider),
+            param.PageNumber,
+            param.PageSize
+        );
 
         return pagedList;
     }

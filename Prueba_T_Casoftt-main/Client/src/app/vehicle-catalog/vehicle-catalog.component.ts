@@ -18,22 +18,26 @@ import { VehiclesService } from '@services/vehicles.service';
 import { PaginatedResult } from '@_models/pagination';
 import { Vehicle } from '@_models/vehicle';
 import { SelectOption } from '@_models/selectOption';
+import { PipeFiltersPipe } from 'src/app/pipe-filtes/pipe-filters.pipe';
 
 @Component({
   selector: 'app-vehicle-catalog',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, FontAwesomeModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    RouterModule,
+    FontAwesomeModule,
+    PipeFiltersPipe,
+  ],
   templateUrl: './vehicle-catalog.component.html',
 })
 export class VehiclesComponent implements OnInit, OnDestroy {
   faBroom = faBroom;
   faSearch = faSearch;
 
-  
-
   private brandsService = inject(BrandsService);
   paginatedResult = signal<PaginatedResult<Vehicle[]> | null>(null);
-
 
   private service = inject(VehiclesService);
   private searchTerms = new Subject<string>();
@@ -47,21 +51,14 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     effect(
       () => {
         this.paginatedResult.set(this.service.paginatedResult());
-        console.log('soy los autos ',this.paginatedResult());
+        console.log('Vehículos actuales:', this.paginatedResult());
       },
       { allowSignalWrites: true }
     );
   }
 
   ngOnInit() {
-    this.service.getVehicles().subscribe({
-      next: (data: PaginatedResult<Vehicle[]>) => {
-        this.paginatedResult.set(data); 
-      },
-      error: (err) => {
-        console.error('Error al obtener los vehículos:', err);
-      },
-    });
+    this.loadVehicles();
   }
 
   ngOnDestroy() {
@@ -72,9 +69,11 @@ export class VehiclesComponent implements OnInit, OnDestroy {
 
   applyFilters() {
     const term = this.term;
-    // const term = this.term.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    if (term !== this.service.params().term) {
+    if (
+      (term?.toLocaleLowerCase() || '') !==
+      (this.service.params().term?.toLocaleLowerCase() || '')
+    ) {
       this.service.params().term = term;
     }
 
@@ -82,44 +81,42 @@ export class VehiclesComponent implements OnInit, OnDestroy {
       this.service.params().year = this.year ?? 0;
     }
 
+    this.service.params().pageNumber = 1;
+
+    this.loadVehicles();
+  }
+
+  loadVehicles() {
     this.service.getVehicles().subscribe({
       next: (data: PaginatedResult<Vehicle[]>) => {
         this.paginatedResult.set(data);
       },
       error: (err) => {
-        console.error('Error al aplicar filtros:', err);
+        console.error('Error al obtener los vehículos:', err);
       },
     });
   }
 
   pageChanged(event: any) {
     const totalPages = this.paginatedResult()?.pagination?.totalPages;
-    if (this.service.params().pageNumber !== event.page) {
+
+    if (
+      this.service.params().pageNumber !== event.page &&
+      event.page > 0 &&
+      event.page <= totalPages!
+    ) {
       this.service.params().pageNumber = event.page;
+      this.loadVehicles();
+      console.log('Página cambiada a:', event.page);
+    } else {
+      console.log('Página inválida o ya en la página solicitada');
     }
-
-    if (event.page < 1 || event.page > totalPages!) {
-      console.log('Página inválida, no se puede navegar');
-      return;
-    }
-
-    if (event.page === 1 && totalPages === 1) {
-      console.log('Ya estamos en la primera página, no se puede ir atrás');
-      return;
-    }
-
-    if (totalPages! + 1 !== event.page) {
-      this.service.params().pageNumber = event.page;
-      this.ngOnInit(); 
-    }
-
-    console.log('Solicitud para obtener vehículos de la página:', event.page);
   }
 
   navigateToVehicle(vehicleId: number | null | undefined) {
-
     this.service.navigateToVehicle1(vehicleId);
   }
+
   onSearchChange() {
     this.searchTerms.next(this.term);
   }

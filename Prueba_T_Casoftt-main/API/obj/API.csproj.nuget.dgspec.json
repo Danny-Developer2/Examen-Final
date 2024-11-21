@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\Api.csproj": {}
+    "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\Api.csproj": {
+    "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\Api.csproj",
-        "projectName": "Api",
-        "projectPath": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\Api.csproj",
+        "projectUniqueName": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\API\\API.csproj",
+        "projectName": "API",
+        "projectPath": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\API\\API.csproj",
         "packagesPath": "C:\\Users\\ju4nl\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\obj\\",
+        "outputPath": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ju4nl\\AppData\\Roaming\\NuGet\\NuGet.Config",
