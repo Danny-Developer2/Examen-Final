@@ -58,7 +58,8 @@ export class VehicleDetailComponent implements OnInit {
       this.deleteActionVehicle(vehicleId); 
     }
   }
-  
+
+ 
 
   
 

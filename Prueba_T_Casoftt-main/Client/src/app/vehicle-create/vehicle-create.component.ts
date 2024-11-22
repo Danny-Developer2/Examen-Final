@@ -135,6 +135,13 @@ export class VehicleCreateComponent {
 
  
   onSubmit() {
+   
+    
+    if (!this.form.value.photos || this.form.value.photos.length === 0) {
+      this.form.value.photos = [
+        { url: 'https://via.placeholder.com/150', id: null }
+      ];
+    }
     
     this.service.createVehicle(this.form.value).subscribe({
       next: (response: Vehicle) => {
@@ -143,6 +150,7 @@ export class VehicleCreateComponent {
       },
       error:
       (error) => {
+    
         this.toastr.error(error.error.error)
       }
         
