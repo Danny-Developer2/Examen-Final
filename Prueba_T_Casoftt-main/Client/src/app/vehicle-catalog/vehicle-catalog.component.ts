@@ -57,7 +57,6 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     effect(
       () => {
         this.paginatedResult.set(this.service.paginatedResult());
-        console.log('Vehículos actuales:', this.paginatedResult());
       },
       { allowSignalWrites: true }
     );
@@ -70,7 +69,6 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.paginatedResult.set(null);
     this.service.clearCache();
-    console.log('Componente destruido, datos limpiados.');
   }
 
   applyFilters() {
@@ -113,9 +111,8 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     ) {
       this.service.params().pageNumber = event.page;
       this.loadVehicles();
-      console.log('Página cambiada a:', event.page);
     } else {
-      console.log('Página inválida o ya en la página solicitada');
+      this.toastr.error('Página inválida o ya en la página solicitada')
     }
   }
 

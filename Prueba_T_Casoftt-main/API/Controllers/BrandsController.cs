@@ -10,14 +10,17 @@ namespace API.Controllers
     public class BrandsController(IUnitOfWork uow) : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<PagedList<BrandDto>>> GetPagedListAsync(BrandParams param)
+        public async Task<ActionResult<PagedList<BrandDto>>> GetPagedListAsync([FromQuery] BrandParams param)
         {
+            
             PagedList<BrandDto> pagedList = await uow.BrandRepository.GetPagedListAsync(param);
 
-            Response.AddPaginationHeader(pagedList);
+            
+            Response.AddPaginationHeader<BrandDto>(pagedList);
 
             return pagedList;
         }
+
 
         [HttpPost]
         public async Task<ActionResult<BrandDto?>> CreateAsync([FromBody] BrandCreateDto request)

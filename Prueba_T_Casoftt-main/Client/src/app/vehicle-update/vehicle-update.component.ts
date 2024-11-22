@@ -3,8 +3,6 @@ import {
   ChangeDetectorRef,
   inject,
   signal,
-  OnChanges,
-  SimpleChanges,
 } from '@angular/core';
 import {
   FormArray,
@@ -70,22 +68,31 @@ export class VehicleUpdateComponent {
     this.brandsService.getOptions().subscribe((options) => {
       this.brandOptions = options;
     });
+  }
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id !== null) {
-      this.service.getById(parseInt(id)).subscribe({
+  ngOnInit() {
+    if (this.vehicleId) {
+      this.service.getById(this.vehicleId).subscribe({
         next: (data: Vehicle) => {
           console.log('Datos del vehículo', data);
 
+          // Asignar marca seleccionada
           const selectedBrand = this.brandOptions.find(
             (brand) => brand.id === data.brand?.id
           );
           if (selectedBrand) {
             this.form.controls.brand.setValue(selectedBrand);
-          } else {
-            console.log('Marca no encontrada:', data.brand);
           }
 
+          // Rellenar campos básicos
+          this.form.patchValue({
+            model: data.model,
+            year: data.year,
+            color: data.color,
+          });
+
+          // Limpiar y rellenar las fotos
+          this.form.controls.photos.clear();
           data.photos.forEach((photo) => {
             const photoFormGroup = new FormGroup<PhotoType>({
               url: new FormControl(photo.url),
@@ -96,8 +103,8 @@ export class VehicleUpdateComponent {
 
           this.cdr.detectChanges();
         },
-        error: () => {
-          console.error('Error al cargar los datos del vehículo.', 'danger');
+        error: (err) => {
+          console.error('Error al cargar los datos del vehículo.', err);
         },
       });
     }
@@ -105,7 +112,7 @@ export class VehicleUpdateComponent {
 
   deletePhoto(index: number) {
     this.form.controls.photos.removeAt(index);
-    this.toastr.success(`url de imagen eliminada.`);
+    this.toastr.success(`Foto eliminada con éxito.`);
   }
 
   addPhoto() {
@@ -130,48 +137,10 @@ export class VehicleUpdateComponent {
     this.url = url;
   }
 
-  ngOnInit() {
-    this.service.getVehicles().subscribe({
-      next: (data: Vehicle[]) => {
-        this.vehicles = data;
-
-        const vehicle = this.vehicles.find((v) => v.id === this.vehicleId);
-        if (vehicle) {
-          const selectedBrand = this.brandOptions.find(
-            (brand) => brand.id === vehicle.brand?.id
-          );
-
-          if (selectedBrand) {
-            this.form.controls.brand.setValue(selectedBrand);
-          }
-
-          this.form.patchValue({
-            model: vehicle.model,
-            year: vehicle.year,
-            color: vehicle.color,
-          });
-
-          vehicle.photos.forEach((photo) => {
-            const photoFormGroup = new FormGroup<PhotoType>({
-              url: new FormControl(photo.url),
-              id: new FormControl(photo.id),
-            });
-            this.form.controls.photos.push(photoFormGroup);
-          });
-
-          this.cdr.detectChanges();
-        }
-      },
-      error: (err) => {
-        console.error('Error al cargar los vehículos.', 'danger');
-      },
-    });
-  }
-
   onSubmit() {
     this.service.updateVehicle(this.vehicleId, this.form.value).subscribe({
       next: (response: Vehicle) => {
-        this.toastr.success(`Los Datos se actualizaron con éxito.`);
+        this.toastr.success(`Los datos se actualizaron con éxito.`);
         this.router.navigate(['/vehicles']);
       },
       error: (error) => this.toastr.error(error.error),

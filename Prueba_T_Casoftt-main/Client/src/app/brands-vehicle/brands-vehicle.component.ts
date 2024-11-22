@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrandsService } from '@services/brands.service';
 import { SelectOption } from '@_models/selectOption';
+import { PaginatedResult } from '@_models/pagination';
+import { Brand } from '@_models/brands';
 
 @Component({
   selector: 'app-brands-vehicle',
@@ -11,21 +13,33 @@ import { SelectOption } from '@_models/selectOption';
 })
 export class BrandsVehicleComponent {
 
+  paginatedResult = signal<PaginatedResult<Brand[]> | null>(null);
+
+
+
   private brandsService = inject(BrandsService);
   brandOptions: SelectOption[] = [];
 
+  constructor() {
+    
 
-  ngOnInit() {
-    this.brandsService.getOptions().subscribe(
-      (options: SelectOption[]) => {
-        this.brandOptions = options;
-        console.log('soy las marcas', this.brandOptions);
-      },
-      (error) => {
-        console.error('Error al obtener las opciones de marca:', error);
-      }
-    );
+    effect(() => {
+      this.paginatedResult.set(this.brandsService.paginatedResult());
+    }, { allowSignalWrites: true })
+  }
+
+  ngOnInit() : void {
+    this.brandsService.getPagedList();
 
   }
+
+  pageChanged(event: any) {
+    if (this.brandsService.params().pageNumber != event.page) {
+      this.brandsService.params().pageNumber = event.page;
+      this.brandsService.getPagedList();
+    }
+  }
+
+
 
 }

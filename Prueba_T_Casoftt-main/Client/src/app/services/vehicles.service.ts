@@ -54,13 +54,11 @@ export class VehiclesService {
       params = params.append('year', this.params()['year'] as number);
     }
 
-    console.log(this.baseUrl);
     return this.http
       .get<Vehicle[]>(this.baseUrl, { observe: 'response', params })
       .pipe(
         map((response) => {
           setPaginatedResponse(response, this.paginatedResult);
-          console.log(response);
           this.cache.set(cacheKey, response);
 
           return response.body;
@@ -99,7 +97,7 @@ export class VehiclesService {
  
   navigateToVehicle1(vehicleId: number | null | undefined) {
     if (vehicleId !== null && vehicleId !== undefined) {
-      this.router.navigate([`vehicle/`, vehicleId]);
+      this.router.navigate([`vehicles/`, vehicleId]);
     } else {
       console.error('ID de vehículo no válido');
     }
@@ -107,7 +105,7 @@ export class VehiclesService {
 
   navigateToVehicleUpdate(vehicleId: number | null | undefined) {
     if (vehicleId !== null && vehicleId !== undefined) {
-      this.router.navigate([`vehicle/${vehicleId}/edit`]);
+      this.router.navigate([`vehicles/${vehicleId}/edit`]);
     } else {
       console.error('ID de vehículo no válido');
     }
@@ -123,7 +121,7 @@ export class VehiclesService {
   }
   clearCache() {
     this.cache.clear();
-    console.log('Caché limpiada.');
+    
   }
   deleteVehicle(vehicleId: number | null | undefined): void {
     if (vehicleId !== null && vehicleId !== undefined) {
@@ -131,15 +129,11 @@ export class VehiclesService {
         .delete(`${this.baseUrl}/${vehicleId}`, { observe: 'response' })
         .subscribe(
           (response) => {
-            console.log('Status code:', response.status);
-            console.log('Response body:', response.body);
             if (response.status === 200) {
-              console.log('Vehicle deleted successfully');
               this.getVehicles();
             }
           },
           (error) => {
-            console.log(error)
             console.error('Error deleting vehicle:', error);
             console.error('Error status:', error.status); 
           }

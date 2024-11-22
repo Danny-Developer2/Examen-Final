@@ -16,7 +16,7 @@ namespace API.Controllers
         {
             PagedList<VehicleDto> pagedList = await uow.VehicleRepository.GetPagedListAsync(param);
 
-            // Asegúrate de especificar el tipo genérico de PagedList al agregar el encabezado de paginación
+            
             Response.AddPaginationHeader<VehicleDto>(pagedList);
 
             return pagedList;

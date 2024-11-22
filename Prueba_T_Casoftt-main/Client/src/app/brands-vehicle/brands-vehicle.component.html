@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (brand of brandOptions; track brand.id){
+      @for (brand of paginatedResult()?.items; track brand.id){
       <tr>
         <td>{{ brand.id }}</td>
         <td>{{ brand.name }}</td>
@@ -16,4 +16,41 @@
       }
     </tbody>
   </table>
+</div>
+<!-- Paginación -->
+<div class="d-flex justify-content-center align-items-center mt-2">
+  <button
+    class="btn btn-primary rounded-pill px-4 py-2"
+    (click)="
+      pageChanged({
+        page: (paginatedResult()?.pagination)!.currentPage - 1
+      })
+    "
+    [disabled]="paginatedResult()?.pagination?.currentPage === 1"
+  >
+    Anterior
+  </button>
+
+  <span
+    class="mx-3 text-black"
+    style="font-size: 1.2rem; font-weight: bold"
+  >
+    Página {{ paginatedResult()?.pagination?.currentPage }} de
+    {{ paginatedResult()?.pagination?.totalPages }}
+  </span>
+
+  <button
+    class="btn btn-primary rounded-pill px-4 py-2"
+    (click)="
+      pageChanged({
+        page: (paginatedResult()?.pagination)!.currentPage + 1
+      })
+    "
+    [disabled]="
+      paginatedResult()?.pagination?.currentPage ===
+      paginatedResult()?.pagination?.totalPages
+    "
+  >
+    Siguiente
+  </button>
 </div>

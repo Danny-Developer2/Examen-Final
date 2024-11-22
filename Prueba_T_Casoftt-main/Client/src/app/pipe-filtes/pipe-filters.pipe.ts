@@ -18,7 +18,6 @@ export class PipeFiltersPipe implements PipeTransform {
     if (term && term.trim().length > 0) {
       items = items.filter(item => item.model && item.model.toLowerCase().includes(term.toLowerCase()));
     }
-    console.log('soy lo filtrado' , items)
     return items;
   }
   
