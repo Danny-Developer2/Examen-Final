@@ -1,4 +1,4 @@
-@if(paginatedResult()?.items){
+@if(paginatedResult()?.items?.length){
 <div>
   <div class="container" style="width: 80%; max-width: 1200%; padding: 1%; margin-top: 5%;">
     <div
@@ -237,6 +237,16 @@
 </div>
 }@else{
 
-<p class="text-center text-black">¡No se encontraron vehículos!</p>
+  <div class="d-flex justify-content-center align-items-center min-vh-100 bg-light" style="margin-top:0%;">
+    <div class="bg-white p-5 rounded-lg shadow-lg text-center" style="max-width: 400px; width: 100%;">
+      <h2 class="display-4 text-danger mb-4">¡Ups! No se encontraron vehículos</h2>
+      <p class="lead text-secondary mb-4">Parece que aún no tienes vehículos registrados. ¡Crea uno ahora!</p>
+      <a href="/vehicle/create" class="btn btn-primary btn-lg shadow-sm">
+        Crear Vehículo
+      </a>
+    </div>
+  </div>
+  
+  
 
 }

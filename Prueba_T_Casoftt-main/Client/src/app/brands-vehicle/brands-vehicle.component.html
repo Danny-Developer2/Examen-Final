@@ -1,3 +1,4 @@
+@if(paginatedResult()?.items?.length){
 <div class="container mt-4">
   <h1 class="text-center mb-4" style="margin-top: 10%">Lista de Marcas</h1>
   <table class="table table-bordered border-primary">
@@ -54,3 +55,12 @@
     Siguiente
   </button>
 </div>
+}@else {
+  <div class="d-flex justify-content-center align-items-center min-vh-100 bg-light" style="margin-top:0%;">
+    <div class="bg-white p-5 rounded-lg shadow-lg text-center" style="max-width: 400px; width: 100%;">
+      <h2 class="display-4 text-danger mb-4">¡Ups! No se encontraron Marcas Disponibles.</h2>
+      <p class="lead text-secondary mb-4">Parece que aún no tienes Marcas registradas. ¡Crea una ahora!</p>
+      
+    </div>
+  </div>
+}
