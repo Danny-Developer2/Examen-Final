@@ -1,155 +1,156 @@
-<!--  -->
-<div
-  class="container bg-light p-4 rounded shadow-lg position-fixed"
-  style="
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    max-height: 50vh;
-    display: flex;
-    margin-top: 80px;
-  "
->
-  <!-- Imagen del vehículo -->
-  <div class="col-md-6 col-lg-6 text-center mb-2">
-    <img
-      src="https://images.carexpert.com.au/resize/3000/-/app/uploads/2022/10/06-DSC07000.jpg"
-      alt="Imagen del vehículo"
-      class="img-fluid rounded"
-      style="max-height: 100%; object-fit: contain"
-    />
-  </div>
-
-  <!-- Formulario desplazable -->
-  <div class="col-md-6 col-lg-6 p-1" style="overflow-y: auto; max-height: 100%">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="form-group mb-3">
-        <label for="brand" class="form-label">Marca</label>
-        <select
-          id="brand"
-          formControlName="brand"
-          class="form-select form-select-sm"
-        >
-          <option disabled value="null">Seleccione una marca</option>
-          @for(brand of brandOptions; track brand.id ){
-
-          <option [ngValue]="brand">
-            {{ brand.name }}
-          </option>
-          }
-        </select>
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="model" class="form-label">Modelo</label>
-        <input
-          class="form-control form-control-sm"
-          type="text"
-          id="model"
-          formControlName="model"
-          placeholder="Ingrese el modelo"
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+  rel="stylesheet"
+/>
+<div class="container-fluid  custom-fluid-container" style="margin-top: 5%;  max-width: 75%; ">
+  <div class="contact__wrapper shadow-lg mt-n9">
+    <div class="row no-gutters">
+      <div
+        class="col-lg-5 contact-info__wrapper gradient-brand-color p-5 order-lg-2"
+      >
+        <!-- aqui la imagen -->
+        <img
+          src="https://images.carexpert.com.au/resize/3000/-/app/uploads/2022/10/06-DSC07000.jpg"
+          alt="Imagen del vehículo"
+          class="img-fluid w-100 h-100 rounded"
         />
-        @if(form.get('model')?.touched && form.get('model')?.invalid){
-
-        <div style="color: red">
-          @if(form.get('model')?.hasError('required')){
-
-          <span>Este campo es requerido</span>
-          }
-        </div>
-        }
       </div>
 
-      <div class="form-group mb-3">
-        <label for="year" class="form-label">Año</label>
-        <input
-          type="number"
-          id="year"
-          formControlName="year"
-          placeholder="Ingrese el año"
-          class="form-control form-control-sm"
-        />
-        @if(form.get('year')?.touched && form.get('year')?.invalid){
+      <div class="col-lg-7 contact-form__wrapper p-5 order-lg-1"style="overflow-y: auto; max-height: 100%">
+        <!-- aqui el formulario -->
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-group mb-3">
+            <label for="brand" class="form-label">Marca</label>
+            <select
+              id="brand"
+              formControlName="brand"
+              class="form-select form-select-sm"
+            >
+              <option disabled value="null">Seleccione una marca</option>
+              @for(brand of brandOptions; track brand.id ){
 
-        <div style="color: red">
-          @if(form.get('year')?.hasError('required')){
+              <option [ngValue]="brand">
+                {{ brand.name }}
+              </option>
+              }
+            </select>
+          </div>
 
-          <span>Este campo es requerido</span>
-          }
-        </div>
-        }
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="color" class="form-label">Color</label>
-        <input
-          type="text"
-          id="color"
-          formControlName="color"
-          placeholder="Ingrese el color"
-          class="form-control form-control-sm"
-        />
-        @if(form.get('color')?.touched && form.get('color')?.invalid){
-
-        <div style="color: red">
-          @if(form.get('color')?.hasError('required')){
-
-          <span>Este campo es requerido</span>
-          }
-        </div>
-        }
-      </div>
-
-      <!-- Fotos -->
-      <div formArrayName="photos">
-        @for(photo of form.controls.photos.controls; track $index){
-
-        <div [formGroupName]="$index" class="form-group mb-3">
-          <label for="url-{{ $index }}" class="form-label"></label>
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon3">URL Foto</span>
+          <div class="form-group mb-3">
+            <label for="model" class="form-label">Modelo</label>
             <input
+              class="form-control form-control-sm"
               type="text"
-              id="url-{{ $index }}"
-              formControlName="url"
-              placeholder="Ingrese la URL de la foto"
+              id="model"
+              formControlName="model"
+              placeholder="Ingrese el modelo"
+            />
+            @if(form.get('model')?.touched && form.get('model')?.invalid){
+
+            <div style="color: red">
+              @if(form.get('model')?.hasError('required')){
+
+              <span>Este campo es requerido</span>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="year" class="form-label">Año</label>
+            <input
+              type="number"
+              id="year"
+              formControlName="year"
+              placeholder="Ingrese el año"
               class="form-control form-control-sm"
             />
+            @if(form.get('year')?.touched && form.get('year')?.invalid){
+
+            <div style="color: red">
+              @if(form.get('year')?.hasError('required')){
+
+              <span>Este campo es requerido</span>
+              }
+            </div>
+            }
           </div>
+
+          <div class="form-group mb-3">
+            <label for="color" class="form-label">Color</label>
+            <input
+              type="text"
+              id="color"
+              formControlName="color"
+              placeholder="Ingrese el color"
+              class="form-control form-control-sm"
+            />
+            @if(form.get('color')?.touched && form.get('color')?.invalid){
+
+            <div style="color: red">
+              @if(form.get('color')?.hasError('required')){
+
+              <span>Este campo es requerido</span>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Fotos -->
+          <div formArrayName="photos">
+            @for(photo of form.controls.photos.controls; track $index){
+
+            <div [formGroupName]="$index" class="form-group mb-3">
+              <label for="url-{{ $index }}" class="form-label"></label>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">URL Foto</span>
+                <input
+                  type="text"
+                  id="url-{{ $index }}"
+                  formControlName="url"
+                  placeholder="Ingrese la URL de la foto"
+                  class="form-control form-control-sm"
+                />
+              </div>
+              <button
+                type="button"
+                (click)="deletePhoto($index)"
+                class="btn btn-danger mt-2"
+              >
+                Eliminar Foto
+              </button>
+            </div>
+            }
+          </div>
+
           <button
             type="button"
-            (click)="deletePhoto($index)"
-            class="btn btn-danger mt-2"
+            (click)="addPhoto()"
+            class="btn btn-primary mb-3"
           >
-            Eliminar Foto
+            Agregar Foto
           </button>
-        </div>
-        } @if(form.get('photos')?.invalid && form.get('photos')?.touched ||
-        form.value.photos?.length === 0){
 
-        <div class="alert alert-warning" role="alert">
-          Debes agregar al menos una foto.
-        </div>
-        }
+          <div class="form-group">
+            <button
+              type="button"
+              (click)="onCancel()"
+              class="btn btn-danger w-100"
+            >
+              Cancelar
+            </button>
+            <br /><br />
+            <button
+              type="submit"
+              class="btn btn-success w-100"
+              [disabled]="form.invalid"
+            >
+              Guardar Vehículo
+            </button>
+          </div>
+        </form>
+
       </div>
-
-      <button type="button" (click)="addPhoto()" class="btn btn-primary mb-3">
-        Agregar Foto
-      </button>
-
-      <div class="form-group">
-        <button type="button" (click)="onCancel()" class="btn btn-danger w-100">
-          Cancelar
-        </button>
-        <br /><br />
-        <button
-          type="submit"
-          class="btn btn-success w-100"
-          [disabled]="form.invalid"
-        >
-          Guardar Vehículo
-        </button>
-      </div>
-    </form>
+    </div>
   </div>
 </div>

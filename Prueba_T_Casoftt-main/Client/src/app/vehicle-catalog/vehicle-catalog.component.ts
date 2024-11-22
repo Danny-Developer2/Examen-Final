@@ -20,6 +20,7 @@ import { Vehicle } from '@_models/vehicle';
 import { SelectOption } from '@_models/selectOption';
 import { PipeFiltersPipe } from 'src/app/pipe-filtes/pipe-filters.pipe';
 import { ErrorServices } from '@services/errors.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-vehicle-catalog',
@@ -34,8 +35,10 @@ import { ErrorServices } from '@services/errors.service';
   templateUrl: './vehicle-catalog.component.html',
 })
 export class VehiclesComponent implements OnInit, OnDestroy {
+  [x: string]: any;
   faBroom = faBroom;
   faSearch = faSearch;
+  private toastr = inject(ToastrService);
 
   private brandsService = inject(BrandsService);
   paginatedResult = signal<PaginatedResult<Vehicle[]> | null>(null);
@@ -127,6 +130,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   resetFilters() {
     this.term = '';
     this.year = null;
+    this.toastr.success(`Valores de filtros reiniciados.`);
     this.service.resetVehicleParams();
     this.service.getVehicles();
   }

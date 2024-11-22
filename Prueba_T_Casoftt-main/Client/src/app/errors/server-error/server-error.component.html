@@ -1,18 +1,38 @@
-<h4 class="d-flex justify-content-center align-items-center" style="height: 100vh;">Internal server error - refreshing the page will make the error disappear!</h4>
-@if(!error){
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - Internal Server Error</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container vh-100 d-flex flex-column justify-content-center align-items-center text-center">    
+        <!-- Error Message Section -->
+        <h1 class="text-danger">500 - Internal Server Error</h1>
+        <p class="text-muted">Refreshing the page might resolve the issue!</p>
 
-    <div class=" justify-content-center align-items-center">
-        <h5 >Error: {{error.message}}</h5>
-        <p >Note: If you are seeing this then Angular is probably not to blame</p>
-        <p>What to do next?</p>
-        <ol>
-            <li>Open the chrome dev tools</li>
-            <li>Inspect the network tab</li>
-            <li>Check the failing request</li>
-            <li>Examine the request URL - make sure it is correct</li>
-            <li>Reproduce the error in Postman - if we see the same response, then the issue is not with Angular</li>
-        </ol>
-        <p>Following is the stack trace - this is where your investigation should start!</p>
-        <code>{{error.details}}</code>
+        @if(error){
+            <div class="bg-white p-4 rounded shadow-sm">
+                <h5 class="text-dark">Error: {{error.message}}</h5>
+                <p class="text-muted">
+                    Note: If you are seeing this, Angular is probably not to blame.
+                </p>
+                <p class="fw-bold">What to do next?</p>
+                <ol class="text-start">
+                    <li>Open the Chrome DevTools.</li>
+                    <li>Inspect the <b>Network</b> tab.</li>
+                    <li>Check the failing request.</li>
+                    <li>Examine the request URL - make sure it is correct.</li>
+                    <li>Reproduce the error in Postman - if we see the same response, then the issue is not with Angular.</li>
+                </ol>
+                <p class="fw-bold">Following is the stack trace - this is where your investigation should start!</p>
+                <div class="bg-light p-3 rounded">
+                    <code>{{error.details}}</code>
+                </div>
+            </div>
+        }
     </div>
-}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -83,7 +83,7 @@ export class VehiclesService {
   }
 
   update(model: any, id: number) {
-    return this.http.put(`${this.baseUrl}${id}/edit`, model).pipe();
+    return this.http.put(`${this.baseUrl}/${id}/edit`, model).pipe();
   }
 
   deletePhoto(photo: Photo) {
@@ -119,7 +119,7 @@ export class VehiclesService {
 
     if (vehicle) return of(vehicle);
 
-    return this.http.get<Vehicle>(`${this.baseUrl}${id}`);
+    return this.http.get<Vehicle>(`${this.baseUrl}/${id}`);
   }
   clearCache() {
     this.cache.clear();

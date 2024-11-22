@@ -1,49 +1,44 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpErrorResponse
-} from '@angular/common/http';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { catchError } from 'rxjs';
+import { BadRequest } from 'src/app/_models/badRequest';
 
-@Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
-
-  constructor(private router: Router, private toastr: ToastrService) {}
-
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(
-      tap(() => {
-        console.log('error')
-      }),      
-      catchError((error: HttpErrorResponse) => {
-        console.log(error)
-        if (error) {
-          if (error.status === 400) {
-            if (error.error.errors) {
-              throw error.error;
-            } else {
-              this.toastr.error(error.error.message, error.status.toString())
+export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const router = inject(Router);
+  const toastr = inject(ToastrService);
+  
+ 
+  
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error) {
+        switch (error.status) {
+          case 400:
+            const item = new BadRequest(error);
+            toastr.error(error.error.message, error.status.toString())
+            if (item.validationErrors && item.validationErrors.length > 0) {
             }
-          }
-          if (error.status === 401) {
-            this.toastr.error(error.error.message, error.status.toString())
-          }
-          if (error.status === 404) {
-            this.router.navigateByUrl('/not-found');
-          };
-          if (error.status === 500) {
-            console.log('errorInterceptor')
+            throw item;
+          case 401:
+            const unauthorizedError = new BadRequest(error);
+            throw unauthorizedError;
+          case 404:
+            const navigationExtras404: NavigationExtras = {state: {error: error.error}};
+            router.navigateByUrl('404',navigationExtras404);
+            const notFoundError = new BadRequest(error);
+            throw notFoundError;
+          case 500:
             const navigationExtras: NavigationExtras = {state: {error: error.error}};
-            this.router.navigateByUrl('/server-error', navigationExtras);
-          }
+            router.navigateByUrl('/server-error', navigationExtras);
+            throw new BadRequest(error);
+          default:
+            const defaultError = new BadRequest(error);
+            throw defaultError;
         }
-        return throwError(() => new Error(error.message))
-      })
-    )
-  }
-}
+      }
+      throw error;
+    })
+  )
+};

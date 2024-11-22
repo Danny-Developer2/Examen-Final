@@ -22,6 +22,7 @@ export const routes: Routes = [
   { path: 'Brands', component: BrandsVehicleComponent },
   { path: '404', component: Error404Component }, 
   { path: 'e', component: TestErrorsComponent }, 
+  // { path: '*', component: Error404Component }, 
   { path: 'not-found', component: NotFoundComponent }, 
   { path: 'server-error', component: ServerErrorComponent }, 
 

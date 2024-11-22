@@ -126,6 +126,7 @@ export class VehicleCreateComponent {
   }
   onCancel() {
     this.router.navigate(['/home']);
+    this.toastr.success(`Creación cancelada.`);
   }
 
   onPhotoChange(url: string | null) {
@@ -140,7 +141,12 @@ export class VehicleCreateComponent {
         this.toastr.success(`El auto con ID ${response.id} se guardó con éxito.`);
           this.router.navigate(['/vehicles']);
       },
-      error: error => this.toastr.error(error.error)
+      error:
+      (error) => {
+        this.toastr.error(error.error.error)
+      }
+        
+      
     
     })
    

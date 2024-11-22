@@ -123,6 +123,7 @@ export class VehicleUpdateComponent {
 
   onCancel() {
     this.router.navigate([`/vehicles`]);
+    this.toastr.success(`Edición cancelada.`);
   }
 
   onPhotoChange(url: string | null) {
