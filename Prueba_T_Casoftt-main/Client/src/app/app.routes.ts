@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'not-found', component: NotFoundComponent }, 
   { path: 'server-error', component: ServerErrorComponent }, 
 
-  { path: '**', redirectTo: '/404' },
+  
 ];
 
 

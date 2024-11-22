@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\Api.csproj": {}
   },
   "projects": {
@@ -12,16 +13,27 @@
         "projectPath": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\Api.csproj",
         "packagesPath": "C:\\Users\\ju4nl\\.nuget\\packages\\",
         "outputPath": "C:\\Projects\\Examen-Final\\Examen-Final\\Prueba_T_Casoftt-main\\Api\\obj\\",
+=======
+    "/Users/juandanielluevanoruiz/Desktop/Examen/Examen-Final/Prueba_T_Casoftt-main/API/API.csproj": {}
+  },
+  "projects": {
+    "/Users/juandanielluevanoruiz/Desktop/Examen/Examen-Final/Prueba_T_Casoftt-main/API/API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/juandanielluevanoruiz/Desktop/Examen/Examen-Final/Prueba_T_Casoftt-main/API/API.csproj",
+        "projectName": "API",
+        "projectPath": "/Users/juandanielluevanoruiz/Desktop/Examen/Examen-Final/Prueba_T_Casoftt-main/API/API.csproj",
+        "packagesPath": "/Users/juandanielluevanoruiz/.nuget/packages/",
+        "outputPath": "/Users/juandanielluevanoruiz/Desktop/Examen/Examen-Final/Prueba_T_Casoftt-main/API/obj/",
+>>>>>>> c7495030b7ea49dafb76c855f7907e67fbb862eb
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ju4nl\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/juandanielluevanoruiz/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -85,7 +97,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
